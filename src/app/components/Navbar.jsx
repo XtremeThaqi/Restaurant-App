@@ -34,7 +34,7 @@ export default function Navbar() {
                             {mobileMenu ? <FaTimes/> : <FaBars/>}
                         </button>
                         {mobileMenu && (
-                            <div className="absolute top-[60px] left-0 w-full px-10 py-5 rounded-[5px] backdrop-blur-lg">
+                            <div className="absolute top-[60px] left-0 w-full px-10 py-5 rounded-[5px] max-sm:bg-[rgba(31,31,31,0.9)] backdrop-blur-md">
                                 <ul className="flex flex-col gap-7">
                                     {navData.map((item) => (
                                         <li className="text-white cursor-pointer text-[20px]" key={item.id}>
