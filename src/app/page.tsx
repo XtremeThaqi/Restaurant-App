@@ -1,3 +1,4 @@
+import Head from "next/head";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import Food from "./components/Food";
@@ -10,6 +11,10 @@ import Footer from "./components/Footer";
 export default function Page() {
   return (
     <>
+      <Head>
+        <title>Home</title>
+        <meta name="description" content="Welcome to our homepage" />
+      </Head>
       <div className="m-0 p-0 bg-black">
         <Navbar />
         <Hero />
