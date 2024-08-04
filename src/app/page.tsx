@@ -12,7 +12,7 @@ export default function Page() {
   return (
     <>
       <Head>
-        <title>Home</title>
+        <title>Blini</title>
         <meta name="description" content="Welcome to our homepage" />
       </Head>
       <div className="m-0 p-0 bg-black">
