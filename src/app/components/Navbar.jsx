@@ -13,7 +13,7 @@ export default function Navbar() {
     const navData = [
         { id: 1, name: "Food", href: "#food"},
         { id: 2, name: "About", href: "#about"},
-        { id: 3, name: "Testemonials", href: "#Testemonials"},
+        { id: 3, name: "Testemonials", href: "#testemonials"},
         { id: 4, name: "Contact Us", href: "#contact"},
     ]
 
@@ -21,7 +21,7 @@ export default function Navbar() {
         <>
             <nav className="fixed top-0 py-5 w-full z-20 /*bg-[rgba(31,31,31,0.9)]*/ backdrop-blur-lg">
                 <div className="flex justify-between px-10 items-center relative">
-                    <a href="/" className="cursor-pointer text-[30px] font-bold text-white line-through font-serif">BLINI</a>
+                    <a href="/" className="cursor-pointer text-[30px] font-bold text-orange-600 line-through font-serif">BLINI</a>
                     <ul className="flex items-center gap-7 max-md:hidden">
                         {navData.map((item) => (
                             <li className="text-white cursor-pointer text-[17px]" key={item.id}>
