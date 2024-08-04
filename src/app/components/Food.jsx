@@ -1,4 +1,4 @@
-"use cleint"
+"use client"
 
 import Image from 'next/image'
 
