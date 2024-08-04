@@ -30,14 +30,14 @@ export default function Navbar() {
                         ))}
                     </ul>
                     <div className="md:hidden mt-2">
-                        <button className="text-white text-[27px]" onClick={toggle}>
+                        <button className="text-orange-600 text-[27px]" onClick={toggle}>
                             {mobileMenu ? <FaTimes/> : <FaBars/>}
                         </button>
                         {mobileMenu && (
                             <div className="absolute top-[60px] left-0 w-full px-10 py-5 rounded-[5px] max-sm:bg-[rgba(31,31,31,0.9)] backdrop-blur-md">
                                 <ul className="flex flex-col gap-7">
                                     {navData.map((item) => (
-                                        <li className="text-white cursor-pointer text-[20px]" key={item.id}>
+                                        <li className="text-orange-600 cursor-pointer text-[20px]" key={item.id}>
                                             <a href={item.href}>{item.name}</a>
                                         </li>
                                     ))}

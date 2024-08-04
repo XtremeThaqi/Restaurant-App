@@ -12,7 +12,7 @@ export default function Open() {
 
   return (
     <>
-        <div className="py-10">
+        <div className="py-32" id="time">
             <div className="flex items-center justify-center">
                 <h2 className="text-3xl text-orange-600 underline">Open from:</h2>
             </div>

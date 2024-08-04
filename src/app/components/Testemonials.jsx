@@ -31,7 +31,7 @@ export default function Testemonials() {
                 {testimonialsData.map((testimonial) => (
                     <div key={testimonial.id} className="rounded-2xl w-[330px] h-[440px] border border-orange-600 p-5 flex flex-wrap justify-center">
                         <div className="relative flex flex-col gap-2 items-center">
-                            <Image className="max-w-24" src={testimonial.image} alt={testimonial.name}/>
+                            <Image className="max-w-24 rounded-full" src={testimonial.image} alt={testimonial.name}/>
                             <p className="text-xl text-orange-600">{testimonial.name}</p>
                             <p className="text-lg mt-4 text-gray-400">{testimonial.description}</p>
                             <p className="absolute right-0 -bottom-0 text-[20px] text-orange-600"><FaStar/></p>
@@ -47,20 +47,3 @@ export default function Testemonials() {
     </>
   )
 }
-
- {/* <div className="flex p-5 gap-5 flex-wrap justify-center items-center mt-16">
-                <div className="border border-orange-600 rounded-3xl w-[500px] p-5 flex  items-center">
-                    <div className="flex flex-col gap-4 mr-5">
-                        <Image src={img1} alt="img-1" className="w-20 pointer-events-none object-cover" />
-                        <h2 className="text- mt-2 text-orange-600"></h2>
-                    </div>
-                    <p className="text-gray-400 text-md mt-4"></p>
-                </div>
-                <div className="border border-orange-600 rounded-3xl w-[500px] p-5 flex items-center">
-                    <div className="flex flex-col">
-                        <Image src={img2} alt="img-2" className="w-20 pointer-events-none object-cover" />
-                        <h2 className="text-2xl mt-2 text-orange-600">Mary F</h2>
-                    </div>
-                    <p className="text-gray-400 text-md mt-4">This was my first visit to Pietro’s and it was a wonderful experience! The food was delicious, the service was friendly and efficient and the atmosphere was great. I highly recommend it!</p>
-                </div>
-            </div> */}

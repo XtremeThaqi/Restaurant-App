@@ -5,6 +5,7 @@ import About from "./components/About";
 import Open from './components/Open'
 import Testemonials from "./components/Testemonials";
 import Contact from "./components/Contact";
+import Footer from "./components/Footer";
 
 export default function Page() {
   return (
@@ -17,6 +18,7 @@ export default function Page() {
         <Open />
         <Testemonials />
         <Contact />
+        <Footer/>
       </div>
     </>
   );
