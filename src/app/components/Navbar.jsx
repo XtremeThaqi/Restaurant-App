@@ -13,7 +13,7 @@ export default function Navbar() {
     const navData = [
         { id: 1, name: "Food", href: "#food"},
         { id: 2, name: "About", href: "#about"},
-        { id: 3, name: "Testemonials", href: "#testemonials"},
+        { id: 3, name: "Testimonials", href: "#testimonials"},
         { id: 4, name: "Contact Us", href: "#contact"},
     ]
 

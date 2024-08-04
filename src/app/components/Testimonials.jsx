@@ -7,7 +7,7 @@ import img1 from './images/testemonials-1.jpg';
 import img2 from './images/testemonials-2.jpg';
 import img3 from './images/testemonials-3.jpg';
 
-export default function Testemonials() {
+export default function Testimonials() {
 
     const testimonialsData = [
         { id: 1, name: 'Norbert A', image: img1,
@@ -23,9 +23,9 @@ export default function Testemonials() {
 
   return (
     <>
-        <div className="py-20" id="testemonials">
+        <div className="py-20" id="testimonials">
             <div className="flex justify-center items-center">
-                <div className="text-orange-600 underline text-3xl max-sm:text-3xl">Testemonials</div>
+                <div className="text-orange-600 underline text-3xl max-sm:text-3xl">Testimonials</div>
             </div>
             <div className="mt-16 flex flex-wrap w-auto gap-5 justify-center items-center">
                 {testimonialsData.map((testimonial) => (
