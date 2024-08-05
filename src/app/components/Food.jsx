@@ -56,7 +56,7 @@ export default function Food() {
         },
     ]
 
-  return (
+    return (
         <>
             <div className="py-24 bg-gradient-to-t from-[rgba(60,60,60,0.5)] to-[rgba(57,56,56,0.3)]" id='food'>
                 <div className="flex flex-col">
@@ -77,5 +77,5 @@ export default function Food() {
                 </div>
             </div>
         </>
-  )
+    )
 }
