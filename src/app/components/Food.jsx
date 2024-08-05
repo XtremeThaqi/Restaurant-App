@@ -57,25 +57,25 @@ export default function Food() {
     ]
 
   return (
-    <>
-      <div className="py-24 bg-gradient-to-t from-[rgba(60,60,60,0.5)] to-[rgba(57,56,56,0.3)]" id='food'>
-        <div className="flex flex-col">
-            <h2 className="text-4xl text-orange-600 underline text-center">Our Menu</h2>
-            <h2 className="text-2xl text-zinc-500 text-center mt-5">Explore our delicious food menu</h2>
-        </div>
-        <div className="flex flex-wrap items-center justify-center mx-5 gap-4 mt-10">
-            {foodData.map((food) => (
-                <div key={food.id} className="p-4 border border-zinc-600 rounded-lg hover:scale-105 transition-all duration-300 ease-linear">
-                    <Image src={food.image} alt={food.name} className="w-full h-40 object-cover pointer-events-none"/>
-                    <div className="relative py-3 h-[160px] max-w-[300px]">
-                        <h2 className="text-2xl mb-1 text-orange-600">{food.name}</h2>
-                        <p className="text-sm mb-2 text-gray-400">{food.description}</p>
-                        <p className="absolute bottom-0 text-[18px] text-orange-600">${food.price}</p>
-                    </div>
+        <>
+            <div className="py-24 bg-gradient-to-t from-[rgba(60,60,60,0.5)] to-[rgba(57,56,56,0.3)]" id='food'>
+                <div className="flex flex-col">
+                    <h2 className="text-4xl text-orange-600 underline text-center">Our Menu</h2>
+                    <h2 className="text-2xl text-zinc-500 text-center mt-5">Explore our delicious food menu</h2>
                 </div>
-            ))}
-        </div>
-      </div>
-    </>
+                <div className="flex flex-wrap items-center justify-center mx-5 gap-4 mt-10">
+                    {foodData.map((food) => (
+                        <div key={food.id} className="p-4 border border-zinc-600 rounded-lg hover:scale-105 transition-all duration-300 ease-linear">
+                            <Image src={food.image} alt={food.name} className="w-full h-40 object-cover pointer-events-none"/>
+                            <div className="relative py-3 h-[160px] max-w-[300px]">
+                                <h2 className="text-2xl mb-1 text-orange-600">{food.name}</h2>
+                                <p className="text-sm mb-2 text-gray-400">{food.description}</p>
+                                <p className="absolute bottom-0 text-[18px] text-orange-600">${food.price}</p>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </>
   )
 }
