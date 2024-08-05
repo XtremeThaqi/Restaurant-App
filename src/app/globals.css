@@ -10,3 +10,6 @@ html {
   background: #000;
 }
 
+.shadow {
+  box-shadow: 0 2px 3px rgb(234 88 12)
+}

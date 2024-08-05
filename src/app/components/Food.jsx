@@ -65,7 +65,7 @@ export default function Food() {
         </div>
         <div className="flex flex-wrap items-center justify-center mx-5 gap-4 mt-10">
             {foodData.map((food) => (
-                <div key={food.id} className="p-4 border border-zinc-600 rounded-lg">
+                <div key={food.id} className="p-4 border border-zinc-600 rounded-lg hover:scale-105 transition-all duration-300 ease-linear">
                     <Image src={food.image} alt={food.name} className="w-full h-40 object-cover pointer-events-none"/>
                     <div className="relative py-3 h-[160px] max-w-[300px]">
                         <h2 className="text-2xl mb-1 text-orange-600">{food.name}</h2>

@@ -25,11 +25,10 @@ export default function Footer() {
                             <p className="text-[16px] -mt-2 text-zinc-400">erblinthaqi40@gmail.com</p>
                         </div>
                     </div>
-                    
                 </div>
                 <div className="text-center mt-12 border-t-2 w-96 p-2 border-orange-600">
-                        <p className="text-orange-600 text-[13px]">&copy; Copyright 2024 Powered by <span className="underline italic"> Blini</span></p>
-                    </div>
+                    <p className="text-orange-600 text-[13px]">&copy; Copyright 2024 Powered by <span className="underline italic"> Blini</span></p>
+                </div>
             </div>
         </>
     )
