@@ -3,7 +3,7 @@
 export default function Footer() {
     return (
         <>
-            <div className="flex flex-col px-10 py-2 items-center w-full bg-[rgba(31,31,31,0.3)]">
+            <div className="flex flex-col px-10 py-5 items-center w-full bg-[rgba(31,31,31,0.3)]">
                 <div className="flex flex-wrap gap-20">
                     <div className="relative">
                         <h2 className="text-2xl text-orange-600 before:absolute before:top-7 before:bg-orange-600 before:w-28 before:h-[2px]">&quot;BLINI&quot;</h2>

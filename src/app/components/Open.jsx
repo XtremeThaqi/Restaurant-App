@@ -1,3 +1,6 @@
+"use client"
+
+import { motion } from "framer-motion"
 
 export default function Open() {
 
@@ -13,15 +16,23 @@ export default function Open() {
     return (
         <>
             <div className="py-32" id="time">
-                <div className="flex items-center justify-center">
+                <motion.div
+                 initial={{ opacity: 0, x: -50 }}
+                 whileInView={{ opacity: 1, x: 0 }}
+                 transition={{ duration: 1, delay: 0.2 }}
+                 className="flex items-center justify-center">
                     <h2 className="text-3xl text-orange-600 underline">Open from:</h2>
-                </div>
+                </motion.div>
                 <div className="flex justify-center items-center gap-5 mt-10 px-10 max-md:flex-col">
                     {OpenData.map((from) => (
-                        <div key={from.id} className="flex flex-col p-4 gap-3 border border-orange-600 rounded-md w-[400px]">
+                        <motion.div
+                         initial={{ opacity: 0, x: -50 }}
+                         whileInView={{ opacity: 1, x: 0 }}
+                         transition={{ duration: 1, delay: 0.2 }}
+                         key={from.id} className="flex flex-col p-4 gap-3 border border-orange-600 rounded-md w-[400px]">
                             <h3 className="text-lg text-orange-600">{from.title}</h3>
                             <p className="text-lg text-gray-600">{from.time}</p>
-                        </div>
+                        </motion.div>
                     ))}
                 </div>
             </div>

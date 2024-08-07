@@ -1,5 +1,7 @@
 "use client"
 
+import { motion } from "framer-motion"
+
 import { FaStar } from "react-icons/fa";
 
 import Image from "next/image";
@@ -24,12 +26,20 @@ export default function Testimonials() {
   return (
     <>
         <div className="py-20" id="testimonials">
-            <div className="flex justify-center items-center">
+            <motion.div
+             initial={{ opacity: 0, x: -50 }}
+             whileInView={{ opacity: 1, x: 0 }}
+             transition={{ duration: 1, delay: 0.2 }}
+             className="flex justify-center items-center">
                 <div className="text-orange-600 underline text-3xl max-sm:text-3xl">Testimonials</div>
-            </div>
+            </motion.div>
             <div className="mt-16 flex flex-wrap w-auto gap-5 justify-center items-center">
                 {testimonialsData.map((testimonial) => (
-                    <div key={testimonial.id} className="rounded-2xl w-[330px] h-[440px] border border-orange-600 p-5 flex flex-wrap justify-center">
+                    <motion.div
+                     initial={{ opacity: 0, scale: 0.8 }}
+                     whileInView={{ opacity: 1, scale: 1 }}
+                     transition={{ duration: 1, delay: 0.2 }}
+                     key={testimonial.id} className="rounded-2xl w-[330px] h-[440px] border border-orange-600 p-5 flex flex-wrap justify-center">
                         <div className="relative flex flex-col gap-2 items-center">
                             <Image className="max-w-24 rounded-full" src={testimonial.image} alt={testimonial.name}/>
                             <p className="text-xl text-orange-600">{testimonial.name}</p>
@@ -40,7 +50,7 @@ export default function Testimonials() {
                             <p className="absolute right-[85px] -bottom-0 text-[20px] text-orange-600"><FaStar/></p>
                             <p className="absolute right-[115px] -bottom-0 text-[20px] text-orange-600"><FaStar/></p>
                         </div>
-                    </div>
+                    </motion.div>
                 ))}   
             </div>
         </div>
