@@ -29,7 +29,7 @@ export default function Open() {
                          initial={{ opacity: 0, x: -50 }}
                          whileInView={{ opacity: 1, x: 0 }}
                          transition={{ duration: 1, delay: 0.2 }}
-                         key={from.id} className="flex flex-col p-4 gap-3 border border-orange-600 rounded-md w-[400px]">
+                         key={from.id} className="flex flex-col p-4 gap-3 border border-orange-600 rounded-md w-[400px] max-[450px]:w-[300px]">
                             <h3 className="text-lg text-orange-600">{from.title}</h3>
                             <p className="text-lg text-gray-600">{from.time}</p>
                         </motion.div>

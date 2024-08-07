@@ -19,7 +19,7 @@ export default function Navbar() {
 
     return (
         <>
-            <nav className="fixed top-0 py-5 w-full z-20 /*bg-[rgba(31,31,31,0.9)]*/ backdrop-blur-lg">
+            <nav className="fixed top-0 py-5 w-full z-20 backdrop-blur-sm">
                 <div className="flex justify-between px-10 items-center relative">
                     <a href="/" className="cursor-pointer text-[30px] font-bold text-orange-600 line-through font-serif">BLINI</a>
                     <ul className="flex items-center gap-7 max-md:hidden">
