@@ -61,20 +61,21 @@ export default function Food() {
         <>
             <div className="py-24 bg-gradient-to-t from-[rgba(60,60,60,0.5)] to-[rgba(57,56,56,0.3)]" id='food'>
                 <motion.div
-                initial={{ opacity: 0, x: -50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 1, delay: 0.2 }}
-                className="flex flex-col">
+                 initial={{ opacity: 0, x: -50 }}
+                 whileInView={{ opacity: 1, x: 0 }}
+                 transition={{ duration: 1, delay: 0.2 }}
+                 className="flex flex-col">
                     <h2 className="text-4xl text-orange-600 underline text-center">Our Menu</h2>
                     <h2 className="text-2xl text-zinc-500 text-center mt-5">Explore our delicious food menu</h2>
                 </motion.div>
                 <div className="flex flex-wrap items-center justify-center mx-5 gap-4 mt-10">
                     {foodData.map((food) => (
                         <motion.div
-                        initial={{ opacity: 0, y: 50 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0, delay: 0.1 }}
-                        key={food.id} className="p-4 border border-zinc-600 rounded-lg hover:scale-105 transition-all duration-300 ease-linear">
+                         initial={{ opacity: 0, y: 50 }}
+                         whileInView={{ opacity: 1, y: 0 }}
+                         transition={{ duration: 0, delay: 0.3 }}
+                         whileHover={{ scale: 1.05 }}
+                         key={food.id} className="p-4 border border-zinc-600 rounded-lg duration-300">
                             <Image src={food.image} alt={food.name} className="w-full h-40 object-cover pointer-events-none"/>
                             <div className="relative py-3 h-[160px] max-w-[300px]">
                                 <h2 className="text-2xl mb-1 text-orange-600">{food.name}</h2>
