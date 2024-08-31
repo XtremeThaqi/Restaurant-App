@@ -23,7 +23,7 @@ export default function Contact() {
                  initial={{ opacity: 0, x: -50 }}
                  whileInView={{ opacity: 1, x: 0 }}
                  transition={{ duration: 1, delay: 0.2 }}
-                 className="flex flex-col gap-5 ml-32 max-lg:ml-0">
+                 className="flex flex-col gap-5 ml-32 max-[1100px]:ml-0">
                     <div className="flex items-center gap-2">
                         <IoLocationSharp className="text-orange-600 text-[20px]" />
                         <h2 className="text-orange-600 text-[18px]">Kosovo, Lipjan</h2>
@@ -61,9 +61,9 @@ export default function Contact() {
                      initial={{ opacity: 0, x: -50 }}
                      whileInView={{ opacity: 1, x: 0 }}
                      transition={{ duration: 1, delay: 0.2 }}
-                     className="grid grid-cols-2 mt-5 gap-5">
+                     className="grid grid-cols-2 mt-5 gap-5 max-sm:grid-cols-1">
                         <input type="tel" inputMode="tel" placeholder="123-456-789" className="p-3 bg-transparent outline-none text-orange-600 rounded-sm border border-orange-600 focus:border-2 placeholder:text-orange-600" required/>
-                        <input type="text" inputMode="numeric" placeholder="How many?" className="mt-[1px] bg-transparent border border-orange-600 text-orange-600 outline-none p-3 placeholder:text-orange-600 overflow-hidden resize-none rounded-sm focus:border-2" />
+                        <input type="text" inputMode="numeric" placeholder="How many people?" className="mt-[1px] bg-transparent border border-orange-600 text-orange-600 outline-none p-3 placeholder:text-orange-600 overflow-hidden resize-none rounded-sm focus:border-2" />
                     </motion.div>
                     <motion.button
                      initial={{ opacity: 0, x: -50 }}

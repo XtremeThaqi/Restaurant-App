@@ -6,15 +6,18 @@ import { FaBars, FaTimes } from "react-icons/fa";
 export default function Navbar() {
     const [mobileMenu, setMobileMenu] = useState(false)
 
+    // toggle menu for navigation bars
     const toggle = () => {
         setMobileMenu(!mobileMenu)
     }
 
+    // navigation data
     const navData = [
         { id: 1, name: "Food", href: "#food"},
         { id: 2, name: "About", href: "#about"},
         { id: 3, name: "Testimonials", href: "#testimonials"},
-        { id: 4, name: "Contact Us", href: "#contact"},
+        // { id: 4, name: "Contact Us", href: "#contact"},
+        { id: 4, name: "Book a Table", href: "#contact"}
     ]
 
     return (
