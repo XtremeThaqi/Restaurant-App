@@ -13,11 +13,11 @@ export default function Navbar() {
 
     // navigation data
     const navData = [
-        { id: 1, name: "Food", href: "#food"},
-        { id: 2, name: "About", href: "#about"},
-        { id: 3, name: "Testimonials", href: "#testimonials"},
+        { id: 1, name: "Food", href: "#food" },
+        { id: 2, name: "About", href: "#about" },
+        { id: 3, name: "Testimonials", href: "#testimonials" },
         // { id: 4, name: "Contact Us", href: "#contact"},
-        { id: 4, name: "Book a Table", href: "#contact"}
+        { id: 4, name: "Book a Table", href: "#contact" }
     ]
 
     return (
@@ -34,7 +34,7 @@ export default function Navbar() {
                     </ul>
                     <div className="md:hidden mt-2">
                         <button className="text-orange-600 text-[27px]" onClick={toggle}>
-                            {mobileMenu ? <FaTimes/> : <FaBars/>}
+                            {mobileMenu ? <FaTimes /> : <FaBars />}
                         </button>
                         {mobileMenu && (
                             <div className="absolute top-[60px] left-0 w-full px-10 py-5 rounded-[5px] max-sm:bg-[rgba(31,31,31,0.9)] backdrop-blur-md">
@@ -47,6 +47,7 @@ export default function Navbar() {
                                 </ul>
                             </div>
                         )}
+
                     </div>
                 </div>
             </nav>
