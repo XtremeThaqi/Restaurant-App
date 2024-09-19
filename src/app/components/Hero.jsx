@@ -7,7 +7,7 @@ import image from './images/image-bg.jpg';
 export default function Hero() {
   return (
     <>
-      <div className="h-screen relative flex justify-center items-center z-10">
+      <div className="h-screen relative flex justify-center items-center">
         <div className="flex justify-center w-full">
           <Image src={image} alt="image" className="w-full h-full object-cover pointer-events-none" layout="fill" />
           <motion.div

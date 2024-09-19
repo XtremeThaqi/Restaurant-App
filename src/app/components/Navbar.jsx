@@ -22,7 +22,7 @@ export default function Navbar() {
 
     return (
         <>
-            <nav className="fixed top-0 py-5 w-full z-20 backdrop-blur-sm">
+            <nav className="absolute py-5 w-full z-50 backdrop-blur-sm bg-white/[0.1]">
                 <div className="flex justify-between px-10 items-center relative">
                     <a href="/" className="cursor-pointer text-[30px] font-bold text-orange-600 line-through font-serif">BLINI</a>
                     <ul className="flex items-center gap-7 max-md:hidden">

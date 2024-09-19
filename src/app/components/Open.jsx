@@ -8,7 +8,7 @@ export default function Open() {
         { id: 1, title: 'Monday - Friday',
             time: '9:00 AM - 9:00 PM',
         },
-        { id: 2, title: 'Saturday - [Closed]-Sunday',
+        { id: 2, title: 'Saturday - Sunday',
             time: '11:00 AM - 7:00 PM',
         }
     ]

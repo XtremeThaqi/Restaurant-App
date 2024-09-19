@@ -1,3 +1,4 @@
+import WarningMessage from "./components/WarningMessage";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import Food from "./components/Food";
@@ -10,7 +11,8 @@ import Footer from "./components/Footer";
 export default function Page() {
   return (
     <>
-      <div className="m-0 p-0 bg-black">
+      <div className="overflow-x-hidden">
+        <WarningMessage />
         <Navbar />
         <Hero />
         <Food />
