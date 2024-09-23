@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { useState } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
@@ -13,16 +13,17 @@ export default function Navbar() {
 
     // navigation data
     const navData = [
-        { id: 1, name: "Food", href: "#food" },
-        { id: 2, name: "About", href: "#about" },
-        { id: 3, name: "Testimonials", href: "#testimonials" },
+        { id: 1, name: "Food", href: "#food"},
+        { id: 2, name: "About", href: "#about"},
+        { id: 3, name: "Testimonials", href: "#testimonials"},
+        { id: 4, name: "Contact Us", href: "#contact"},
         // { id: 4, name: "Contact Us", href: "#contact"},
-        { id: 4, name: "Book a Table", href: "#contact" }
+        { id: 5, name: "Book a Table", href: "#contact"}
     ]
 
     return (
         <>
-            <nav className="absolute py-5 w-full z-50 backdrop-blur-sm bg-white/[0.1]">
+            <nav className="fixed top-0 py-5 w-full z-20 backdrop-blur-sm">
                 <div className="flex justify-between px-10 items-center relative">
                     <a href="/" className="cursor-pointer text-[30px] font-bold text-orange-600 line-through font-serif">BLINI</a>
                     <ul className="flex items-center gap-7 max-md:hidden">
@@ -34,7 +35,7 @@ export default function Navbar() {
                     </ul>
                     <div className="md:hidden mt-2">
                         <button className="text-orange-600 text-[27px]" onClick={toggle}>
-                            {mobileMenu ? <FaTimes /> : <FaBars />}
+                            {mobileMenu ? <FaTimes/> : <FaBars/>}
                         </button>
                         {mobileMenu && (
                             <div className="absolute top-[60px] left-0 w-full px-10 py-5 rounded-[5px] max-sm:bg-[rgba(31,31,31,0.9)] backdrop-blur-md">
@@ -47,7 +48,6 @@ export default function Navbar() {
                                 </ul>
                             </div>
                         )}
-
                     </div>
                 </div>
             </nav>
