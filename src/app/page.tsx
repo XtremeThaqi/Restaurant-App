@@ -1,4 +1,4 @@
-import WarningMessage from "./components/WarningMessage";
+// import WarningMessage from "./components/WarningMessage";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import Food from "./components/Food";
@@ -12,7 +12,7 @@ export default function Page() {
   return (
     <>
       <div className="overflow-x-hidden">
-        <WarningMessage />
+        {/* <WarningMessage /> */}
         <Navbar />
         <Hero />
         <Food />
