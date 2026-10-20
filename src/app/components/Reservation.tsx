@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { demoTimes, localDate, validateReservation, type ReservationErrors, type ReservationValues } from "../lib/reservation";
+import Icon from "./Icon";
 const initial: ReservationValues = { date: "", time: "", guests: "2", requests: "" };
 export default function Reservation() {
   const [values, setValues] = useState(initial);
@@ -48,7 +49,7 @@ export default function Reservation() {
         <div className="field"><label htmlFor="time">Time *</label><select {...fieldProps("time")} required value={values.time} onChange={event => update("time", event.target.value)}><option value="">Select a time</option>{demoTimes.map(time => <option key={time} value={time}>{time}</option>)}</select>{error("time")}</div></div>
         <div className="field"><label htmlFor="guests">Number of guests *</label><select {...fieldProps("guests")} required value={values.guests} onChange={event => update("guests", event.target.value)}>{Array.from({ length: 8 }, (_, index) => <option key={index} value={index + 1}>{index + 1} {index === 0 ? "guest" : "guests"}</option>)}</select>{error("guests")}</div>
         <div className="field"><label htmlFor="requests">Example special requests <span>(optional)</span></label><textarea {...fieldProps("requests")} rows={3} maxLength={300} placeholder="For example: a quiet table" value={values.requests} onChange={event => update("requests", event.target.value)} />{error("requests")}</div>
-        <button className="button button-dark submit-button" type="submit">{state === "loading" ? "Previewing…" : "Preview reservation"}<span aria-hidden="true">↗</span></button>
+        <button className="button button-dark submit-button" type="submit">{state === "loading" ? "Previewing…" : "Preview reservation"}<Icon name="arrow-up-right" /></button>
       </fieldset>
       <div aria-live="polite" aria-atomic="true" className="form-status">{Object.values(errors).filter(Boolean).length > 0 && <p>Please check the highlighted fields.</p>}{state === "loading" && <p>Preparing your local demo preview…</p>}{state === "success" && <p className="success-message"><strong>Demo complete. No table has been booked.</strong> Your example was processed only in this page. No information was sent or saved.</p>}</div>
     </form>

@@ -36,6 +36,17 @@ async function settleImages(page) {
   await page.goto("http://127.0.0.1:3000", { waitUntil: "networkidle" });
   assert.equal(await page.locator("h1").count(), 1);
   assert.equal(await page.locator(".dish-card").count(), 12);
+  // Unicode arrows and starbursts may turn into iOS emoji; use vector icons throughout.
+  assert.equal(await page.locator("svg.icon").count(), 14);
+  assert.equal(await page.locator('svg.icon[aria-hidden="true"][focusable="false"]').count(), 14);
+  assert.equal(await page.getByRole("link", { name: "Explore menu" }).locator("svg.icon").count(), 1);
+  assert.equal(await page.locator(".ribbon-symbol.icon, .asterisk.icon").count(), 2);
+  assert.equal(await page.locator(".detail-heading svg.icon").count(), 1);
+  assert.ok(await page.locator("svg.icon").evaluateAll(icons => icons.every(icon => {
+    const styles = getComputedStyle(icon);
+    return styles.width !== "0px" && styles.height !== "0px" && icon.getAttribute("stroke") === "currentColor";
+  })), "Icons must be visible scalable SVGs using the surrounding text color");
+  assert.equal(await page.locator("body").evaluate(element => /[↗↘↑↓✳◷☰×]/u.test(element.textContent)), false, "No platform-dependent icon glyphs in page text");
   assert.equal(await page.locator(".hero-content").evaluate(element => getComputedStyle(element).animationName), "none");
   await page.emulateMedia({ reducedMotion: "no-preference" });
   assert.equal(await page.locator(".hero-content").evaluate(element => getComputedStyle(element).animationName), "enter");
@@ -47,6 +58,7 @@ async function settleImages(page) {
     await page.evaluate(() => window.scrollTo(0, 0));
     assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), "Overflow at " + width);
     if (width < 768) {
+      assert.equal(await page.getByRole("button", { name: "Open navigation" }).locator("svg.icon").count(), 1);
       await page.getByRole("button", { name: "Open navigation" }).click();
       assert.equal(await page.getByRole("button", { name: "Close navigation" }).getAttribute("aria-expanded"), "true");
       assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), "Menu overflow at " + width);

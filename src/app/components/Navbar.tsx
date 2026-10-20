@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import Brand from "./Brand";
+import Icon from "./Icon";
 
 const links = [{ href: "#menu", label: "Menu" }, { href: "#story", label: "Our story" }, { href: "#visit", label: "Visit" }, { href: "#reservations", label: "Reservations" }];
 export default function Navbar() {
@@ -33,13 +34,13 @@ export default function Navbar() {
     <div className="container nav-inner">
       <a href="#top" aria-label="BLINI home" onClick={() => setOpen(false)}><Brand /></a>
       <button ref={toggle} className="menu-toggle" type="button" aria-label={open ? "Close navigation" : "Open navigation"} aria-expanded={open} aria-controls="primary-navigation" onClick={() => setOpen(!open)}>
-        <span aria-hidden="true">{open ? "×" : "☰"}</span>
+        <Icon name={open ? "close" : "menu"} />
       </button>
       <nav id="primary-navigation" aria-label="Main navigation" className={open ? "navigation is-open" : "navigation"}>
         {links.map(link => <a key={link.href} href={link.href} aria-current={active === link.href ? "location" : undefined} className={link.href === "#reservations" ? "nav-reserve" : ""} onClick={() => {
           setOpen(false);
           if (window.innerWidth < 768) { document.querySelector<HTMLElement>(link.href)?.focus({ preventScroll: true }); }
-        }}>{link.label}{link.href === "#reservations" && <span aria-hidden="true"> ↗</span>}</a>)}
+        }}>{link.label}{link.href === "#reservations" && <Icon name="arrow-up-right" />}</a>)}
       </nav>
     </div>
   </header>;

@@ -2,6 +2,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { categories, filterDishes, formatPrice, type Category } from "../data/menu";
+import Icon from "./Icon";
 
 export default function Food() {
   const [category, setCategory] = useState<Category>("All dishes");
@@ -14,7 +15,7 @@ export default function Food() {
         <div className="dish-image"><Image src={dish.image} alt={dish.name + " — illustrative food photograph"} fill sizes="(max-width: 639px) calc(100vw - 40px), (max-width: 1023px) 45vw, 380px" quality={75} /><span className="dish-number" aria-hidden="true">{String(index + 1).padStart(2, "0")}</span></div>
         <div className="dish-body"><p className="dish-category">{dish.category}</p><div className="dish-title"><h3>{dish.name}</h3><span aria-label={"Sample price " + formatPrice(dish.illustrativePrice)}>{formatPrice(dish.illustrativePrice)}</span></div><p>{dish.description}</p></div>
       </article>)}</div>
-      <div className="menu-note"><span className="asterisk" aria-hidden="true">✳</span><p>Here to browse, stay to imagine.<br /><span>Online ordering is not available for this concept.</span></p><a className="text-link" href="#reservations">Try the reservation demo <span aria-hidden="true">↗</span></a></div>
+      <div className="menu-note"><Icon name="asterisk" className="asterisk" /><p>Here to browse, stay to imagine.<br /><span>Online ordering is not available for this concept.</span></p><a className="text-link" href="#reservations">Try the reservation demo <Icon name="arrow-up-right" /></a></div>
     </div>
   </section>;
 }
