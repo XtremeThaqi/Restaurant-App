@@ -4,7 +4,10 @@ const fs = require("node:fs");
 const url = process.env.BLINI_QA_URL || "http://127.0.0.1:3000";
 
 async function checkEngine(engine, name) {
-  const browser = await engine.launch(name === "chromium" && process.env.BLINI_CHROMIUM_EXECUTABLE ? { executablePath: process.env.BLINI_CHROMIUM_EXECUTABLE } : {});
+  const browser = await engine.launch(name === "chromium" ? {
+    ...(process.env.BLINI_CHROMIUM_EXECUTABLE ? { executablePath: process.env.BLINI_CHROMIUM_EXECUTABLE } : {}),
+    ...(process.env.BLINI_CHROMIUM_CHANNEL ? { channel: process.env.BLINI_CHROMIUM_CHANNEL } : {}),
+  } : {});
   const fallbackOnly = name === "webkit" && process.env.BLINI_WEBKIT_FALLBACK_ONLY === "1";
   try {
     for (const width of fallbackOnly ? [] : [320, 390, 768, 1440, 1920]) {
