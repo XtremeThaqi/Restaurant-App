@@ -8,7 +8,7 @@ type Connection = EventTarget & { saveData?: boolean; effectiveType?: string };
 
 export default function Hero() {
   const runway = useRef<HTMLElement>(null);
-  const section = useRef<HTMLElement>(null);
+  const section = useRef<HTMLDivElement>(null);
   const video = useRef<HTMLVideoElement>(null);
   const [source, setSource] = useState<string>();
   const [playing, setPlaying] = useState(false);
