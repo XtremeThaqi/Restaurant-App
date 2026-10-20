@@ -18,8 +18,14 @@ jobs:
         with:
           node-version: 22
           cache: npm
-      - name: Install original locked dependencies
+      - name: Install locked dependencies
         run: npm ci
+      - name: Audit production dependencies
+        run: npm audit --omit=dev --audit-level=moderate
+      - name: Record full dependency audit (known build-tool findings)
+        run: |
+          mkdir -p qa-artifacts
+          npm audit --json > qa-artifacts/dependency-audit.json || test "$?" -eq 1
       - name: Lint
         run: npm run lint -- --max-warnings=0
       - name: Production build

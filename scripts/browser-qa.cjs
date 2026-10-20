@@ -36,6 +36,12 @@ async function settleImages(page) {
   await page.goto("http://127.0.0.1:3000", { waitUntil: "networkidle" });
   assert.equal(await page.locator("h1").count(), 1);
   assert.equal(await page.locator(".dish-card").count(), 12);
+  assert.equal(await page.locator(".hero-content").evaluate(element => getComputedStyle(element).animationName), "none");
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  assert.equal(await page.locator(".hero-content").evaluate(element => getComputedStyle(element).animationName), "enter");
+  await page.waitForTimeout(750);
+  assert.equal(await page.locator(".hero-content").evaluate(element => getComputedStyle(element).opacity), "1");
+  await page.emulateMedia({ reducedMotion: "reduce" });
   for (const width of [320, 375, 390, 768, 1024, 1440, 1920]) {
     await page.setViewportSize({ width, height: 1000 });
     await page.evaluate(() => window.scrollTo(0, 0));

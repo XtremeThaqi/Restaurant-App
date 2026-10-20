@@ -8,10 +8,13 @@ export default function Reservation() {
   const [state, setState] = useState<"idle" | "loading" | "success">("idle");
   const [minDate, setMinDate] = useState("");
   const busy = useRef(false);
-  const timer = useRef<ReturnType<typeof setTimeout>>();
+  const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const form = useRef<HTMLFormElement>(null);
   useEffect(() => {
-    const tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate() + 1); setMinDate(localDate(tomorrow));
+    const tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate() + 1);
+    // Read the browser's local calendar after hydration to avoid server timezone mismatches.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setMinDate(localDate(tomorrow));
     return () => clearTimeout(timer.current);
   }, []);
   function update(key: keyof ReservationValues, value: string) {

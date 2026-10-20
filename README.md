@@ -42,6 +42,6 @@ Read [the redesign audit and verification notes](docs/REDESIGN.md) for design de
 
 ## Before commercial deployment
 
-The inherited lockfile has outdated dependencies. The first redesign CI install reported 26 audit vulnerabilities (5 moderate, 20 high, 1 critical); Next.js 14 is unsupported. Plan a supported-version upgrade and re-run dependency auditing before production use. This redesign intentionally preserves the original dependency graph.
+The dependency security upgrade moves to Next.js 16 and React 19 and removes four unused packages. The verified full audit decreased from 26 findings to 9 development-tool findings (2 moderate, 7 high, no critical). See [the dependency security report](docs/DEPENDENCY-SECURITY.md) for exact versions, audit evidence and remaining limitations.
 
 Verify food-image rights, menu details, address, contact information, opening hours and any operational booking provider before turning this concept into a real restaurant website.

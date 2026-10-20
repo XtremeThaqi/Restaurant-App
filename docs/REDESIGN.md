@@ -27,6 +27,8 @@ Opening hours are labelled concept hours. No address, directions, telephone link
 
 The demo deliberately omits name, email and phone fields. They serve no purpose without an operational booking destination. Requests are optional examples, limited to 300 characters, cleared after success, and never transmitted or stored. There is no server action, API, analytics, localStorage or sessionStorage. The date must be a valid future local-calendar date; slots and party limits are examples. A brief pending state prevents duplicate submission. Success explicitly says no table was booked.
 
+The later dependency maintenance pass supersedes the historical dependency notes below; see [the security upgrade report](DEPENDENCY-SECURITY.md).
+
 ## Design and architecture
 
 CSS custom properties define palette, typography, section spacing, motion timing and radius. Georgia provides a warm display serif without third-party font downloads; Arial/Helvetica provides a clean interface stack. Contrast-safe dark terracotta is used for small text/buttons; brighter terracotta is decorative. Static hero/story/visit/footer content remains in server components. Only navigation, menu filtering and the reservation preview are client components.
