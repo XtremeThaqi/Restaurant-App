@@ -4,6 +4,18 @@ const fs = require("node:fs");
 const path = require("node:path");
 const screenshots = path.resolve("qa-artifacts");
 fs.mkdirSync(screenshots, { recursive: true });
+async function settleImages(page) {
+  // Visit the whole document so lazy images and original scroll animations appear
+  // in full-page screenshots, then require every image to finish loading.
+  const height = await page.evaluate(() => document.documentElement.scrollHeight);
+  for (let offset = 0; offset < height; offset += 700) {
+    await page.evaluate(y => window.scrollTo(0, y), offset);
+    await page.waitForTimeout(80);
+  }
+  await page.waitForFunction(() => Array.from(document.images).every(image => image.complete), { timeout: 30000 });
+  await page.waitForTimeout(1100);
+  await page.evaluate(() => window.scrollTo(0, 0));
+}
 (async () => {
   const browser = await chromium.launch();
   const page = await browser.newPage({ reducedMotion: "reduce" });
@@ -16,6 +28,7 @@ fs.mkdirSync(screenshots, { recursive: true });
     for (const width of [375, 1440]) {
       await baseline.setViewportSize({ width, height: 1000 });
       await baseline.goto("https://blini.netlify.app/", { waitUntil: "networkidle", timeout: 30000 });
+      await settleImages(baseline);
       await baseline.screenshot({ path: path.join(screenshots, "before-" + width + ".png"), fullPage: true });
     }
   } catch (error) { console.warn("Baseline screenshot unavailable:", error.message); }
@@ -43,6 +56,7 @@ fs.mkdirSync(screenshots, { recursive: true });
       await page.locator("#" + id).scrollIntoViewIfNeeded();
       assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), id + " overflow at " + width);
     }
+    await settleImages(page);
     const broken = await page.locator("img").evaluateAll(images => images.filter(image => image.complete && image.naturalWidth === 0).map(image => image.src));
     assert.deepEqual(broken, [], "Broken imagery at " + width);
     await page.screenshot({ path: path.join(screenshots, "after-" + width + ".png"), fullPage: true });
@@ -53,7 +67,8 @@ fs.mkdirSync(screenshots, { recursive: true });
   assert.equal(await page.locator(".dish-card").count(), 1);
   assert.equal(await page.locator(".dish-card h3").textContent(), "Apfelstrudel");
   assert.equal(await page.getByRole("button", { name: "Desserts", exact: true }).getAttribute("aria-pressed"), "true");
-  await page.getByRole("button", { name: "All dishes", exact: true }).click();
+  await page.getByRole("button", { name: "All dishes", exact: true }).focus();
+  await page.keyboard.press("Enter");
   assert.equal(await page.locator(".dish-card").count(), 12);
   await page.getByRole("button", { name: "Preview reservation", exact: true }).click();
   assert.equal(await page.locator("#date").getAttribute("aria-invalid"), "true");
