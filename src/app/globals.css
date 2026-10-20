@@ -69,11 +69,21 @@ section[tabindex="-1"]:focus, main:focus { outline: none; }
 .menu-toggle { display: none; background: transparent; border: 1px solid #ffffff66; border-radius: var(--radius); width: 46px; height: 46px; }
 .menu-toggle .icon { width: 25px; height: 25px; }
 .hero { position: relative; isolation: isolate; color: var(--ivory); background: var(--ink); min-height: 760px; min-height: max(760px, 95svh); display: flex; flex-direction: column; justify-content: center; }
+/* The track supplies extra native scroll distance while the video stays pinned.
+   No scroll-jacking, video seeking, or sticky ancestor overflow. */
+.hero-scroll { position: relative; }
+.hero-scroll.is-pinned { height: 230svh; }
+.hero-scroll.is-pinned > .hero { position: sticky; top: 0; height: 100svh; min-height: 0; overflow: hidden; }
+.hero-scroll.is-pinned .hero-content { transform: translate3d(0,var(--hero-content-y,0px),0); opacity: var(--hero-content-opacity,1); }
+.hero-scroll.is-pinned .hero-bottom { opacity: var(--hero-bottom-opacity,1); }
+.hero-scroll.is-pinned .hero-shade::after { content: ""; position: absolute; inset: 0; background: var(--ink); opacity: calc(var(--hero-scroll-progress,0) * .23); pointer-events: none; }
+.hero-scroll-meter { display: none; position: absolute; z-index: 2; inset: auto 0 0; height: 3px; background: #ffffff40; pointer-events: none; }
+.hero-scroll.is-pinned .hero-scroll-meter { display: block; }
+.hero-scroll-meter span { display: block; height: 100%; width: 100%; transform-origin: left center; transform: scaleX(var(--hero-scroll-progress,0)); background: #e19366; }
 .hero-media { position: absolute; inset: 0; overflow: hidden; z-index: -3; }
 .hero-image,.hero-video { object-fit: cover; object-position: center; }
-.hero-video { position: absolute; width: 100%; height: 100%; inset: 0; opacity: 0; transform: translate3d(0,var(--hero-shift,0px),0) scale(var(--hero-scale,1.025)); transition: opacity .6s ease; }
+.hero-video { position: absolute; width: 100%; height: 100%; inset: 0; opacity: 0; transform: scale(1.025); transition: opacity .6s ease; }
 .hero-video.is-playing { opacity: 1; }
-.hero h1 { opacity: var(--headline-opacity,1); }
 .hero-bottom-actions { display: flex; align-items: center; gap: 24px; }
 .hero-playback { display: inline-flex; align-items: center; justify-content: center; gap: 9px; min-width: 80px; min-height: 44px; padding: 8px 12px; border: 1px solid #ffffff66; border-radius: var(--radius); background: #171b17c9; color: var(--ivory); font-size: .7rem; }
 .hero-playback:hover { background: var(--ink); border-color: var(--ivory); }
@@ -193,6 +203,7 @@ section[tabindex="-1"]:focus, main:focus { outline: none; }
   .navigation { gap: 22px; }
 }
 @media (max-width: 767px) {
+  .hero-scroll.is-pinned { height: 200svh; }
   html { scroll-padding-top: 92px; }
   .container { width: calc(100% - 40px); }
   .nav-inner { min-height: 84px; }
@@ -262,8 +273,14 @@ section[tabindex="-1"]:focus, main:focus { outline: none; }
   .footer-bottom { flex-direction: column; align-items: start; }
   .footer-bottom a { margin-left: 0; }
 }
+/* Short viewports need natural document height so hero CTAs never become clipped. */
+@media (max-height: 720px) {
+  .hero-scroll.is-pinned { height: auto; }
+  .hero-scroll.is-pinned > .hero { position: relative; height: auto; min-height: max(760px,100svh); overflow: visible; }
+  .hero-scroll.is-pinned .hero-scroll-meter { display: none; }
+}
 @media (prefers-reduced-motion: no-preference) {
-  .hero-content { animation: enter .65s var(--ease) both; }
+  .hero-content > * { animation: enter .65s var(--ease) both; }
   @keyframes enter { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
 }
 @media (prefers-reduced-motion: reduce) {

@@ -32,7 +32,7 @@ Muted, inline autoplay and looping are enabled. Rejected autoplay (including Saf
 
 Reduced motion, reduced data, Save-Data, and reported 2G/slow-2G connections prevent automatic video requests. An explicit Play action opts into footage, while motion/data preferences continue to suppress parallax. Preference changes are handled live. Browsers without a data-saving signal cannot expose that preference to the page; the small mobile file still limits transfer. iOS autoplay decisions remain under browser control.
 
-Scroll remains native. A passive scroll listener batches updates through requestAnimationFrame: at most 18px vertical movement, scaling from 1.025 to 1.06, and a gentle headline fade to no less than 55% opacity. Links and buttons retain full opacity. No animation dependency is added.
+Scroll remains native. An Apple-inspired sticky stage keeps the cooking footage fixed in the viewport while the page advances through an extra 130svh on desktop or 100svh on mobile. A passive scroll listener batches progress updates through requestAnimationFrame: the foreground content shifts upward up to 90px, softens to 45% opacity, the overlay darkens slightly, and a restrained progress line fills from 0 to 100%. At 100%, the section releases and the menu follows normally. The footage continues natural playback (no seek or frame scrubbing). Short viewports (720px high or less), reduced-motion and data-saving modes use the original non-pinned layout. There is no scroll capture, wheel interception, animation dependency, or change to the design's CTAs.
 
 ## Verification
 

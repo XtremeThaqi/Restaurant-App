@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from "react";
 type Connection = EventTarget & { saveData?: boolean; effectiveType?: string };
 
 export default function Hero() {
+  const runway = useRef<HTMLElement>(null);
   const section = useRef<HTMLElement>(null);
   const video = useRef<HTMLVideoElement>(null);
   const [source, setSource] = useState<string>();
@@ -54,16 +55,22 @@ export default function Hero() {
   }, [source]);
 
   useEffect(() => {
-    const hero = section.current;
-    if (!hero || !motionAllowed || !playing) return;
+    const track = runway.current;
+    const stage = section.current;
+    if (!track || !stage || !motionAllowed) return;
     let frame = 0;
     const update = () => {
       frame = 0;
-      const rect = hero.getBoundingClientRect();
-      const progress = Math.min(1, Math.max(0, -rect.top / rect.height));
-      hero.style.setProperty("--hero-shift", `${progress * 18}px`);
-      hero.style.setProperty("--hero-scale", `${1.025 + progress * .035}`);
-      hero.style.setProperty("--headline-opacity", `${1 - progress * .45}`);
+      // Map only the extra scroll distance to 0–100%; the video keeps playing
+      // normally and the sticky stage stays still until the track ends.
+      const travel = Math.max(0, track.offsetHeight - stage.offsetHeight);
+      const progress = travel > 0
+        ? Math.min(1, Math.max(0, -track.getBoundingClientRect().top / travel))
+        : 0;
+      track.style.setProperty("--hero-scroll-progress", progress.toFixed(4));
+      track.style.setProperty("--hero-content-y", `${Math.round(-90 * progress)}px`);
+      track.style.setProperty("--hero-content-opacity", (1 - .55 * progress).toFixed(3));
+      track.style.setProperty("--hero-bottom-opacity", (1 - .55 * progress).toFixed(3));
     };
     const schedule = () => { if (!frame) frame = requestAnimationFrame(update); };
     update();
@@ -73,11 +80,11 @@ export default function Hero() {
       cancelAnimationFrame(frame);
       window.removeEventListener("scroll", schedule);
       window.removeEventListener("resize", schedule);
-      hero.style.removeProperty("--hero-shift");
-      hero.style.removeProperty("--hero-scale");
-      hero.style.removeProperty("--headline-opacity");
+      for (const name of ["--hero-scroll-progress", "--hero-content-y", "--hero-content-opacity", "--hero-bottom-opacity"]) {
+        track.style.removeProperty(name);
+      }
     };
-  }, [motionAllowed, playing]);
+  }, [motionAllowed]);
 
   useEffect(() => {
     const pauseWhenHidden = () => { if (document.hidden) video.current?.pause(); };
@@ -96,7 +103,7 @@ export default function Hero() {
     }
   };
 
-  return <section ref={section} className="hero" aria-labelledby="hero-heading">
+  return <section ref={runway} className={`hero-scroll${motionAllowed ? " is-pinned" : ""}`}><div ref={section} className="hero" aria-labelledby="hero-heading">
     <div className="hero-media" aria-hidden="true">
       <Image className="hero-image" src="/videos/blini-chef-poster.webp" alt="" fill priority sizes="100vw" quality={80} />
       <video ref={video} className={`hero-video${source && hasPlayed && !failed ? " is-playing" : ""}`} src={source} poster="/videos/blini-chef-poster.webp" autoPlay muted loop playsInline preload="none" tabIndex={-1}
@@ -113,5 +120,6 @@ export default function Hero() {
       <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" focusable="false">{playing ? <path d="M3 2h3v12H3zm7 0h3v12h-3z" /> : <path d="m4 2 10 6-10 6z" />}</svg>
       <span>{playing ? "Pause" : "Play"}</span>
     </button>}<a href="#menu">Discover BLINI <Icon name="arrow-down" /></a></div></div>
-  </section>;
+    <div className="hero-scroll-meter" aria-hidden="true"><span /></div>
+  </div></section>;
 }
