@@ -1,0 +1,59 @@
+name: BLINI redesign quality
+on:
+  push:
+    branches: [feat/blini-complete-redesign]
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      NEXT_TELEMETRY_DISABLED: 1
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install locked dependencies
+        run: npm ci
+      - name: Audit production dependencies
+        run: npm audit --omit=dev --audit-level=moderate
+      - name: Record full dependency audit (known build-tool findings)
+        run: |
+          mkdir -p qa-artifacts
+          npm audit --json > qa-artifacts/dependency-audit.json || test "$?" -eq 1
+      - name: Lint
+        run: npm run lint -- --max-warnings=0
+      - name: Production build
+        run: npm run build
+      - name: TypeScript
+        run: npm run typecheck
+      - name: Reservation validation tests
+        run: |
+          ./node_modules/.bin/tsc src/app/lib/reservation.ts --module commonjs --target es2020 --outDir /tmp/blini-validation --skipLibCheck
+          BLINI_VALIDATION_MODULE=/tmp/blini-validation/reservation.js node --test scripts/reservation-test.cjs
+      - name: Install isolated browser QA tools
+        run: |
+          npm install --prefix "$RUNNER_TEMP/blini-qa" --no-package-lock --no-save playwright@1.56.1 axe-core@4.10.3
+          "$RUNNER_TEMP/blini-qa/node_modules/.bin/playwright" install --with-deps chromium
+      - name: Test production UI and capture screenshots
+        env:
+          NODE_PATH: ${{ runner.temp }}/blini-qa/node_modules
+        run: |
+          npm run start > /tmp/blini-server.log 2>&1 &
+          for attempt in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:3000 > /dev/null; then break; fi
+            sleep 1
+          done
+          node scripts/browser-qa.cjs
+      - name: Upload screenshots and accessibility reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: blini-redesign-review
+          path: qa-artifacts
+          if-no-files-found: ignore
