@@ -46,7 +46,8 @@ async function checkEngine(engine, name) {
       assert.ok(Math.abs(pinned.y - top.y) < 2, "video stage stays pinned while content scrolls");
       const progress = await track.evaluate(e => Number(getComputedStyle(e).getPropertyValue("--hero-scroll-progress")));
       assert.ok(progress > 0 && progress < 1, "scroll progress moves through the sticky section");
-      const opacity = await page.locator(".hero-content").evaluate(e => Number(getComputedStyle(e).opacity));
+      const opacity = await page.locator(".hero-content h1").evaluate(e => Number(getComputedStyle(e).opacity));
+      assert.equal(await page.locator(".hero-content .actions").evaluate(e => getComputedStyle(e).opacity), "1", "CTA buttons must retain full contrast during scroll");
       assert.ok(opacity < 1 && opacity > .44, "foreground fades while video stays fixed");
       assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
       await page.evaluate(() => {
