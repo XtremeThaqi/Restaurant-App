@@ -60,8 +60,21 @@ async function checkEngine(engine, name) {
       assert.equal(await track.evaluate(e => Number(getComputedStyle(e).getPropertyValue("--hero-scroll-progress"))), 1);
       await page.evaluate(() => scrollTo({ top: 0, behavior: "instant" }));
       await page.addScriptTag({ path: require.resolve("axe-core/axe.min.js") });
-      const violations = await page.evaluate(async () => (await window.axe.run(document.querySelector(".hero"))).violations.map(v => v.id));
-      assert.deepEqual(violations, [], "hero accessibility");
+      const violations = await page.evaluate(async () => (await window.axe.run(document.querySelector(".hero"))).violations.map(v => ({
+        id: v.id,
+        impact: v.impact,
+        nodes: v.nodes.map(n => ({
+          target: n.target,
+          html: n.html,
+          failureSummary: n.failureSummary,
+          checks: n.any.map(check => ({ message: check.message, data: check.data })),
+        })),
+      })));
+      if (violations.length) {
+        fs.writeFileSync(`qa-artifacts/hero-axe-${name}-${width}.json`, JSON.stringify(violations, null, 2));
+        console.error(`Hero accessibility details for ${name} at ${width}px:`, JSON.stringify(violations, null, 2));
+      }
+      assert.deepEqual(violations.map(v => v.id), [], "hero accessibility");
       await page.screenshot({ path: `qa-artifacts/hero-${name}-${width}.png` });
       await page.emulateMedia({ reducedMotion: "reduce" });
       await page.waitForFunction(() => !document.querySelector("video").getAttribute("src"));
