@@ -282,7 +282,7 @@ section[tabindex="-1"]:focus, main:focus { outline: none; }
   .hero-scroll.is-pinned .hero-scroll-meter { display: none; }
 }
 @media (prefers-reduced-motion: no-preference) {
-  .hero-content > * { animation: enter .65s var(--ease) both; }
+  .hero-content > * { animation: enter .65s var(--ease) backwards; }
   @keyframes enter { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
 }
 @media (prefers-reduced-motion: reduce) {
