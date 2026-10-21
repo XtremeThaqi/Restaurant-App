@@ -47,11 +47,11 @@ async function settleImages(page) {
     return styles.width !== "0px" && styles.height !== "0px" && icon.getAttribute("stroke") === "currentColor";
   })), "Icons must be visible scalable SVGs using the surrounding text color");
   assert.equal(await page.locator("body").evaluate(element => /[↗↘↑↓✳◷☰×]/u.test(element.textContent)), false, "No platform-dependent icon glyphs in page text");
-  assert.equal(await page.locator(".hero-content").evaluate(element => getComputedStyle(element).animationName), "none");
+  assert.equal(await page.locator(".hero-content h1").evaluate(element => getComputedStyle(element).animationName), "none");
   await page.emulateMedia({ reducedMotion: "no-preference" });
-  assert.equal(await page.locator(".hero-content").evaluate(element => getComputedStyle(element).animationName), "enter");
+  assert.equal(await page.locator(".hero-content h1").evaluate(element => getComputedStyle(element).animationName), "enter");
   await page.waitForTimeout(750);
-  assert.equal(await page.locator(".hero-content").evaluate(element => getComputedStyle(element).opacity), "1");
+  assert.equal(await page.locator(".hero-content h1").evaluate(element => getComputedStyle(element).opacity), "1");
   await page.emulateMedia({ reducedMotion: "reduce" });
   for (const width of [320, 375, 390, 768, 1024, 1440, 1920]) {
     await page.setViewportSize({ width, height: 1000 });

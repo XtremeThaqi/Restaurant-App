@@ -39,7 +39,7 @@ jobs:
       - name: Install isolated browser QA tools
         run: |
           npm install --prefix "$RUNNER_TEMP/blini-qa" --no-package-lock --no-save playwright@1.56.1 axe-core@4.10.3
-          "$RUNNER_TEMP/blini-qa/node_modules/.bin/playwright" install --with-deps chromium
+          "$RUNNER_TEMP/blini-qa/node_modules/.bin/playwright" install --with-deps chromium chrome webkit
       - name: Test production UI and capture screenshots
         env:
           NODE_PATH: ${{ runner.temp }}/blini-qa/node_modules
@@ -50,6 +50,7 @@ jobs:
             sleep 1
           done
           node scripts/browser-qa.cjs
+          BLINI_CHROMIUM_CHANNEL=chrome BLINI_WEBKIT=1 node scripts/hero-qa.cjs
       - name: Upload screenshots and accessibility reports
         if: always()
         uses: actions/upload-artifact@v4

@@ -40,6 +40,8 @@ The browser QA packages are installed into an isolated CI directory, preserving 
 
 Read [the redesign audit and verification notes](docs/REDESIGN.md) for design decisions, demo behaviour and remaining limitations.
 
+See [the cinematic hero notes](docs/HERO-VIDEO.md) for footage attribution and license, asset sizes, encoding commands, playback behavior and browser verification.
+
 ## Before commercial deployment
 
 The dependency security upgrade moves to Next.js 16 and React 19 and removes four unused packages. The verified full audit decreased from 26 findings to 9 development-tool findings (2 moderate, 7 high, no critical). See [the dependency security report](docs/DEPENDENCY-SECURITY.md) for exact versions, audit evidence and remaining limitations.
