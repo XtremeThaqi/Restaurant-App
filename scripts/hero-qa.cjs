@@ -25,11 +25,19 @@ async function checkEngine(engine, name) {
       assert.equal(metadata.duration, 12);
       assert.equal(metadata.width, width < 768 ? 450 : 1440);
       assert.equal(new Set(requests).size, 1, "one rendition only");
+      // WebKit may report an intermediate opacity during the 600ms fade-in.
+      // Wait until the video is fully visible before checking pause behavior.
+      await page.waitForFunction(() => {
+        const element = document.querySelector(".hero-video");
+        return element && !element.paused && Number(getComputedStyle(element).opacity) >= 0.999;
+      });
       await page.getByRole("button", { name: "Pause background video" }).click();
       const frozen = await video.evaluate(v => v.currentTime);
       await page.waitForTimeout(700);
       assert.equal(await video.evaluate(v => v.currentTime), frozen);
-      assert.equal(await video.evaluate(v => getComputedStyle(v).opacity), "1", "pause retains the frame");
+      assert.ok(await video.evaluate(v =>
+        v.classList.contains("is-playing") && Number(getComputedStyle(v).opacity) >= 0.999
+      ), "pause retains the visible video frame");
       await page.getByRole("button", { name: "Play background video" }).focus();
       await page.keyboard.press("Enter");
       await page.getByRole("button", { name: "Pause background video" }).waitFor();
