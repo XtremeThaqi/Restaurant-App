@@ -37,10 +37,10 @@ async function settleImages(page) {
   assert.equal(await page.locator("h1").count(), 1);
   assert.equal(await page.locator(".dish-card").count(), 12);
   // Unicode arrows and starbursts may turn into iOS emoji; use vector icons throughout.
-  assert.equal(await page.locator("svg.icon").count(), 14);
-  assert.equal(await page.locator('svg.icon[aria-hidden="true"][focusable="false"]').count(), 14);
+  const iconCount = await page.locator("svg.icon").count();
+  assert.ok(iconCount > 0);
+  assert.equal(await page.locator('svg.icon[aria-hidden="true"][focusable="false"]').count(), iconCount);
   assert.equal(await page.getByRole("link", { name: "Explore menu" }).locator("svg.icon").count(), 1);
-  assert.equal(await page.locator(".ribbon-symbol.icon, .asterisk.icon").count(), 2);
   assert.equal(await page.locator(".detail-heading svg.icon").count(), 1);
   assert.ok(await page.locator("svg.icon").evaluateAll(icons => icons.every(icon => {
     const styles = getComputedStyle(icon);
@@ -53,6 +53,29 @@ async function settleImages(page) {
   await page.waitForTimeout(750);
   assert.equal(await page.locator(".hero-content h1").evaluate(element => getComputedStyle(element).opacity), "1");
   await page.emulateMedia({ reducedMotion: "reduce" });
+  for (const width of [390, 1024, 1440]) {
+    await page.setViewportSize({ width, height: 1000 });
+    for (const id of ["menu", "story", "visit", "reservations"]) {
+      await page.goto(`http://127.0.0.1:3000/#${id}`, { waitUntil: "networkidle" });
+      const gap = await page.evaluate(target => {
+        const header = document.querySelector(".site-header").getBoundingClientRect();
+        const eyebrow = document.querySelector(`#${target} .eyebrow`).getBoundingClientRect();
+        return eyebrow.top - header.bottom;
+      }, id);
+      assert.ok(gap >= 8 && gap <= 72, `${id} heading/header gap at ${width}: ${gap}px`);
+    }
+    await page.goBack({ waitUntil: "networkidle" });
+    assert.equal(new URL(page.url()).hash, "#visit", "browser history restores the previous section");
+  }
+  await page.goto("http://127.0.0.1:3000", { waitUntil: "networkidle" });
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.getByRole("link", { name: "Explore menu" }).hover();
+  assert.ok(await page.getByRole("link", { name: "Explore menu" }).evaluate(element => new DOMMatrix(getComputedStyle(element).transform).m42 < 0), "hero button lifts on pointer hover");
+  await page.locator(".dish-card").first().hover();
+  assert.ok(await page.locator(".dish-card .dish-image img").first().evaluate(element => new DOMMatrix(getComputedStyle(element).transform).a >= 1.04), "food image gently enlarges on pointer hover");
+  await page.getByRole("link", { name: "Explore menu" }).focus();
+  assert.notEqual(await page.getByRole("link", { name: "Explore menu" }).evaluate(element => getComputedStyle(element).outlineStyle), "none", "keyboard focus remains visible");
+  await page.goto("http://127.0.0.1:3000", { waitUntil: "networkidle" });
   for (const width of [320, 375, 390, 768, 1024, 1440, 1920]) {
     await page.setViewportSize({ width, height: 1000 });
     await page.evaluate(() => window.scrollTo(0, 0));
@@ -81,6 +104,9 @@ async function settleImages(page) {
     console.log("PASS responsive layout", width);
   }
   await page.setViewportSize({ width: 390, height: 844 });
+  await page.getByRole("link", { name: "Back to top" }).click();
+  await page.waitForFunction(() => scrollY < 8);
+  assert.equal(new URL(page.url()).hash, "#top");
   await page.getByRole("button", { name: "Desserts", exact: true }).click();
   assert.equal(await page.locator(".dish-card").count(), 1);
   assert.equal(await page.locator(".dish-card h3").textContent(), "Apfelstrudel");

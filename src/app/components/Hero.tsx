@@ -10,6 +10,7 @@ export default function Hero() {
   const runway = useRef<HTMLElement>(null);
   const section = useRef<HTMLDivElement>(null);
   const video = useRef<HTMLVideoElement>(null);
+  const resumeAfterVisibility = useRef(false);
   const [source, setSource] = useState<string>();
   const [playing, setPlaying] = useState(false);
   const [hasPlayed, setHasPlayed] = useState(false);
@@ -87,10 +88,18 @@ export default function Hero() {
   }, [motionAllowed]);
 
   useEffect(() => {
-    const pauseWhenHidden = () => { if (document.hidden) video.current?.pause(); };
+    const pauseWhenHidden = () => {
+      if (document.hidden) {
+        resumeAfterVisibility.current = Boolean(video.current && !video.current.paused);
+        video.current?.pause();
+      } else if (resumeAfterVisibility.current && video.current && source) {
+        resumeAfterVisibility.current = false;
+        void video.current.play().catch(() => setPlaying(false));
+      }
+    };
     document.addEventListener("visibilitychange", pauseWhenHidden);
     return () => document.removeEventListener("visibilitychange", pauseWhenHidden);
-  }, []);
+  }, [source]);
 
   const togglePlayback = () => {
     const element = video.current;
@@ -106,7 +115,7 @@ export default function Hero() {
   return <section ref={runway} className={`hero-scroll${motionAllowed ? " is-pinned" : ""}`}><div ref={section} className="hero" aria-labelledby="hero-heading">
     <div className="hero-media" aria-hidden="true">
       <Image className="hero-image" src="/videos/blini-chef-poster.webp" alt="" fill priority sizes="100vw" quality={80} />
-      <video ref={video} className={`hero-video${source && hasPlayed && !failed ? " is-playing" : ""}`} src={source} poster="/videos/blini-chef-poster.webp" autoPlay muted loop playsInline preload="none" tabIndex={-1}
+      <video ref={video} className={`hero-video${source && hasPlayed && !failed ? " is-playing" : ""}`} src={source} poster="/videos/blini-chef-poster.webp" autoPlay muted loop playsInline preload="auto" tabIndex={-1}
         onPlaying={() => { setPlaying(true); setHasPlayed(true); }} onPause={() => setPlaying(false)} onError={() => { setFailed(true); setPlaying(false); }} />
     </div>
     <div className="hero-shade" />

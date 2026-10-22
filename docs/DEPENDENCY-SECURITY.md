@@ -48,3 +48,7 @@ CI fails on production audit findings at moderate or higher and uploads the full
 - All five reservation validation tests passed.
 - Chromium production regression passed at 320, 375, 390, 768, 1024, 1440 and 1920px, including navigation/focus, filtering, reservation demo with no transmission/storage, image loading and console checks. Axe checks passed at 320, 768 and 1440px. Added checks verified both normal hero animation and reduced-motion behavior. Screenshots and JSON reports are in ignored qa-artifacts and uploaded by CI.
 - git diff --check passed. No CSS, layout, menu content or image assets changed.
+
+## Final polish recheck — 2026-10-22
+
+Clean npm ci passed without changing the dependency graph or lockfile. The current npm audit reports 9 development-tool findings (2 moderate, 7 high) and npm audit --omit=dev reports 0 production findings. No safe compatible patch resolves the remaining Tailwind 3 and Next lint dependency chains. The project continues to avoid --force and unverified overrides.
