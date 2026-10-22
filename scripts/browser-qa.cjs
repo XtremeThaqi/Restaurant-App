@@ -69,6 +69,9 @@ async function settleImages(page) {
   }
   await page.goto("http://127.0.0.1:3000", { waitUntil: "networkidle" });
   await page.setViewportSize({ width: 1440, height: 1000 });
+  // Earlier navigation tests intentionally use reduced motion. Hover timing
+  // must be tested with motion enabled, not with transitions disabled by CSS.
+  await page.emulateMedia({ reducedMotion: "no-preference" });
   const heroButton = page.getByRole("link", { name: "Explore menu" });
   await heroButton.hover();
   assert.ok(await heroButton.evaluate(element => {
@@ -86,6 +89,7 @@ async function settleImages(page) {
   }), "food image zoom uses a gradual transition");
   await page.getByRole("link", { name: "Explore menu" }).focus();
   assert.notEqual(await page.getByRole("link", { name: "Explore menu" }).evaluate(element => getComputedStyle(element).outlineStyle), "none", "keyboard focus remains visible");
+  await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("http://127.0.0.1:3000", { waitUntil: "networkidle" });
   for (const width of [320, 375, 390, 768, 1024, 1440, 1920]) {
     await page.setViewportSize({ width, height: 1000 });
