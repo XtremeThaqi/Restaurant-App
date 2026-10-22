@@ -134,7 +134,7 @@ section[tabindex="-1"]:focus, main:focus { outline: none; }
 .filters button[aria-pressed="true"] { background: var(--ink); color: var(--ivory); border-color: var(--ink); }
 .dish-count { white-space: nowrap; color: var(--muted); font-size: .75rem; }
 .dish-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 34px 26px; }
-.dish-card { min-width: 0; background: var(--paper); border: 1px solid #e1dbce; border-radius: var(--radius); display: flex; flex-direction: column; }
+.dish-card { min-width: 0; background: var(--paper); border: 1px solid #e1dbce; border-radius: var(--radius); display: flex; flex-direction: column; box-shadow: 0 1px 2px rgb(23 27 23 / 3%), 0 4px 12px rgb(23 27 23 / 2%); }
 .dish-image { aspect-ratio: 4/3; position: relative; overflow: hidden; border-radius: var(--radius) var(--radius) 0 0; background: #ded8c8; }
 .dish-image img { object-fit: cover; transition: transform .65s cubic-bezier(.22,1,.36,1); transform: scale(1); }
 .dish-number { position: absolute; top: 14px; left: 14px; border: 1px solid #ffffff77; background: #171b17bd; color: var(--ivory); border-radius: 50%; width: 32px; height: 32px; display: grid; place-items: center; font-size: .65rem; }
@@ -217,9 +217,9 @@ section[tabindex="-1"]:focus, main:focus { outline: none; }
 .button,.nav-reserve,.hero-playback,.filters button,.menu-toggle { transition: background-color .3s ease, color .3s ease, border-color .3s ease, box-shadow .3s ease; }
 .button .icon,.text-link .icon,.footer-bottom .icon,.nav-reserve .icon,.hero-bottom a .icon { transition: color .3s ease; }
 .navigation a,.footer-main nav a,.footer-bottom a,.text-link,.hero-bottom a,.field input,.field select,.field textarea { transition: color .3s ease, border-color .3s ease, background-color .3s ease; }
-.dish-card { transition: border-color .3s var(--ease), box-shadow .3s var(--ease); }
+.dish-card { transition: border-color .35s var(--ease), box-shadow .35s var(--ease); }
 @media (hover: hover) and (pointer: fine) {
-  .dish-card:hover { border-color: #c9bca8; box-shadow: 0 14px 34px #171b1714; }
+  .dish-card:hover { border-color: #d0c6b6; box-shadow: 0 5px 14px rgb(23 27 23 / 5%), 0 16px 32px rgb(23 27 23 / 3.5%); }
   .dish-card:hover .dish-image img { transform: scale(1.045); }
   .field input:hover,.field select:hover,.field textarea:hover { border-color: var(--olive); }
 }
