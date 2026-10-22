@@ -36,12 +36,18 @@ async function check(engine,name) {
       // The fixture intentionally uses real wheel events, never scrollTo(), for the transition.
       await page.screenshot({path:prefix+"-start.png"});
       await page.mouse.move(width/2,height/2);
+      // Collect inside the page BEFORE input: WebKit's wheel protocol may return
+      // after initial frames, so host-side polling can miss the actual movement.
+      await page.evaluate(()=>{
+        window.wheelPositions=[];
+        window.addEventListener("scroll",()=>window.wheelPositions.push(scrollY),{passive:true});
+      });
       await page.mouse.wheel(0,Math.round(start.height*.5));
-      const samples=[];
-      for(let i=0;i<8;i++){await page.waitForTimeout(40);samples.push((await geometry(page)).y);}
+      await page.waitForFunction(()=>window.wheelPositions.length>0);
+      await settle(page);
+      const samples=await page.evaluate(()=>window.wheelPositions);
       assert.ok(new Set(samples.map(Math.round)).size>2,"wheel movement is interpolated over frames");
       assert.ok(samples.every((v,i)=>!i||v>=samples[i-1]-1),"no backwards snap during forward wheel");
-      await settle(page);
       const mid=await geometry(page);
       assert.ok(Math.abs(mid.hero)<2 && mid.menu>height*.3 && mid.menu<height*.7 && mid.front,"stationary hero, rising foreground menu");
       assert.ok(!mid.overflow);
