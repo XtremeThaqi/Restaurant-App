@@ -328,4 +328,10 @@ section[tabindex="-1"]:focus, main:focus { outline: none; }
   .hero-video { transform: none; }
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+  /* Color feedback is non-spatial: retain smooth hover/focus feedback without motion. */
+  .button, .nav-reserve, .hero-playback, .filters button, .menu-toggle,
+  .navigation a, .footer-main nav a, .footer-bottom a, .text-link,
+  .field input, .field select, .field textarea {
+    transition: color .3s ease, background-color .3s ease, border-color .3s ease !important;
+  }
 }
