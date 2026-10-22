@@ -33,7 +33,7 @@ section[tabindex="-1"]:focus, main:focus { outline: none; }
 .container { width: min(100% - 80px, 1200px); margin-inline: auto; }
 .section { padding-block: var(--space-section); scroll-margin-top: calc(24px - var(--space-section)); }
 /* Only Menu needs a tighter landing position beneath the fixed header. */
-.menu-section { padding-top: 36px; scroll-margin-top: 0; }
+.menu-section { background: var(--ivory); padding-top: 36px; scroll-margin-top: 0; }
 #top { scroll-margin-top: -100px; }
 .eyebrow { color: var(--clay); font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .19em; margin-bottom: 24px; }
 .eyebrow.light { color: #f2d6bd; display: flex; align-items: center; gap: 14px; }
