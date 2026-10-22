@@ -60,6 +60,11 @@ async function check(engine,name) {
       assert.equal(new URL(page.url()).hash,"#menu");
       const gap=await page.evaluate(()=>document.querySelector("#menu .eyebrow").getBoundingClientRect().top-document.querySelector(".site-header").getBoundingClientRect().bottom);
       assert.ok(gap>=8&&gap<=72,`menu heading below navbar: ${gap}`);
+      await page.keyboard.press("Shift+Tab");await settle(page);
+      assert.ok(await page.evaluate(()=>{
+        const target=document.activeElement,rect=target.getBoundingClientRect();
+        return target.closest(".hero-scroll") && target.contains(document.elementFromPoint(rect.left+rect.width/2,rect.top+rect.height/2));
+      }),"reverse keyboard navigation reveals the focused hero control above the covering panel");
       await page.goto(url+"/#story");await settle(page);
       await page.goto(url+"/#visit");await page.goBack();await settle(page);
       assert.equal(new URL(page.url()).hash,"#story");

@@ -39,11 +39,23 @@ export default function SmoothScroll({ children }: { children: ReactNode }) {
       const position = target ? positionOf(target) : 0;
       scrollTo(position, true);
     };
+    const revealHeroFocus = (event: FocusEvent) => {
+      const target = event.target;
+      // Sticky elements can be geometrically in view but occluded by the Menu.
+      // Reverse keyboard navigation must reveal the control receiving focus.
+      if (target instanceof HTMLElement && target.closest(".hero-scroll")) {
+        const rect = target.getBoundingClientRect();
+        const foreground = document.elementFromPoint(rect.left + rect.width / 2, rect.top + rect.height / 2);
+        if (!target.contains(foreground)) scrollTo(0);
+      }
+    };
     document.addEventListener("click", navigate);
+    document.addEventListener("focusin", revealHeroFocus);
     window.addEventListener("popstate", restoreHash);
     window.addEventListener("hashchange", restoreHash);
     return () => {
       document.removeEventListener("click", navigate);
+      document.removeEventListener("focusin", revealHeroFocus);
       window.removeEventListener("popstate", restoreHash);
       window.removeEventListener("hashchange", restoreHash);
     };
