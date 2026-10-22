@@ -113,8 +113,8 @@ export default function Hero() {
     <div className="container hero-content">
       <p className="eyebrow light"><span className="small-line" /> The BLINI table</p>
       <h1 id="hero-heading">Good food.<br />Better <em>company.</em></h1>
-      <p className="hero-description">A little discovery. A long conversation.<br />Explore a restaurant concept made for the moments around the table.</p>
-      <div className="actions"><a className="button button-clay" href="#menu">Explore menu <Icon name="arrow-up-right" /></a><a className="button button-ghost" href="#reservations">Reserve a table <span className="demo-tag">Demo</span></a></div>
+      <p className="hero-description">A little discovery. A long conversation.<br />Discover a place made for the moments around the table.</p>
+      <div className="actions"><a className="button button-clay" href="#menu">Explore menu <Icon name="arrow-up-right" /></a><a className="button button-ghost" href="#reservations">Reserve a table</a></div>
     </div>
     <div className="container hero-bottom"><span>Food, conversation & a slower pace</span><div className="hero-bottom-actions">{initialized && !failed && <button className="hero-playback" type="button" onClick={togglePlayback} aria-label={playing ? "Pause background video" : "Play background video"}>
       <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" focusable="false">{playing ? <path d="M3 2h3v12H3zm7 0h3v12h-3z" /> : <path d="m4 2 10 6-10 6z" />}</svg>
