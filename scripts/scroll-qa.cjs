@@ -63,8 +63,17 @@ async function check(engine,name) {
       await page.keyboard.press("Shift+Tab");await settle(page);
       assert.ok(await page.evaluate(()=>{
         const target=document.activeElement,rect=target.getBoundingClientRect();
+        if (target === document.body) return true; // Platform traversal may leave the page.
+        return target.contains(document.elementFromPoint(rect.left+rect.width/2,rect.top+rect.height/2));
+      }),"reverse keyboard navigation leaves the focused control visible");
+      // Safari can omit links from Tab traversal according to platform keyboard
+      // settings. Exercise the occluded hero link explicitly in every engine too.
+      await page.goto(url+"/#menu");await settle(page);
+      await page.locator(".hero-bottom a").focus();await settle(page);
+      assert.ok(await page.evaluate(()=>{
+        const target=document.activeElement,rect=target.getBoundingClientRect();
         return target.closest(".hero-scroll") && target.contains(document.elementFromPoint(rect.left+rect.width/2,rect.top+rect.height/2));
-      }),"reverse keyboard navigation reveals the focused hero control above the covering panel");
+      }),"focusing an occluded hero link reveals it above the panel");
       await page.goto(url+"/#story");await settle(page);
       await page.goto(url+"/#visit");await page.goBack();await settle(page);
       assert.equal(new URL(page.url()).hash,"#story");
