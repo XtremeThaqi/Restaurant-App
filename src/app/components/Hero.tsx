@@ -58,16 +58,15 @@ export default function Hero() {
   useEffect(() => {
     const track = runway.current;
     const stage = section.current;
-    if (!track || !stage || !motionAllowed) return;
+    const menu = track?.nextElementSibling;
+    if (!track || !stage || !menu || !motionAllowed) return;
     let frame = 0;
     const update = () => {
       frame = 0;
-      // Map only the extra scroll distance to 0–100%; the video keeps playing
-      // normally and the sticky stage stays still until the track ends.
-      const travel = Math.max(0, track.offsetHeight - stage.offsetHeight);
-      const progress = travel > 0
-        ? Math.min(1, Math.max(0, -track.getBoundingClientRect().top / travel))
-        : 0;
+      // The hero is sticky for one viewport and the next panel moves over it
+      // in normal document flow. Track the incoming panel, not the sticky hero.
+      const distance = Math.max(1, stage.offsetHeight);
+      const progress = Math.min(1, Math.max(0, 1 - menu.getBoundingClientRect().top / distance));
       track.style.setProperty("--hero-scroll-progress", progress.toFixed(4));
       track.style.setProperty("--hero-content-y", `${Math.round(-90 * progress)}px`);
       track.style.setProperty("--hero-content-opacity", (1 - .55 * progress).toFixed(3));
