@@ -38,12 +38,25 @@ async function checkEngine(engine, name) {
         await page.waitForFunction(() => { const v = document.querySelector("video"); return v.currentTime < 1 && !v.paused; });
       }
       const track = page.locator(".hero-scroll");
+      const menu = page.locator(".menu-section");
       await page.waitForFunction(() => document.querySelector(".hero-scroll").classList.contains("is-pinned"));
       const top = await page.locator(".hero").boundingBox();
+      const menuAtStart = await menu.boundingBox();
+      assert.ok(Math.abs(menuAtStart.y - 900) < 12, "menu begins just below the viewport, leaving the hero fully visible");
+      assert.equal(await menu.evaluate(e => getComputedStyle(e).backgroundColor), "rgb(246, 241, 232)", "rising panel has an opaque background");
       await page.evaluate(() => scrollTo({ top: 300, behavior: "instant" }));
       await page.waitForTimeout(180);
       const pinned = await page.locator(".hero").boundingBox();
       assert.ok(Math.abs(pinned.y - top.y) < 2, "video stage stays pinned while content scrolls");
+      const menuAfterScroll = await menu.boundingBox();
+      assert.ok(menuAfterScroll.y < menuAtStart.y - 280 && menuAfterScroll.y > 0, "menu visibly rises over the stationary hero");
+      const menuIsInFront = await menu.evaluate(e => {
+        const rect = e.getBoundingClientRect();
+        const x = window.innerWidth / 2;
+        const y = Math.min(window.innerHeight - 10, rect.top + 40);
+        return e.contains(document.elementFromPoint(x, y));
+      });
+      assert.ok(menuIsInFront, "menu is the foreground layer while the hero remains pinned");
       const progress = await track.evaluate(e => Number(getComputedStyle(e).getPropertyValue("--hero-scroll-progress")));
       assert.ok(progress > 0 && progress < 1, "scroll progress moves through the sticky section");
       const opacity = await page.locator(".hero-content h1").evaluate(e => Number(getComputedStyle(e).opacity));
