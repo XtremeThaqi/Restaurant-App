@@ -69,10 +69,21 @@ async function settleImages(page) {
   }
   await page.goto("http://127.0.0.1:3000", { waitUntil: "networkidle" });
   await page.setViewportSize({ width: 1440, height: 1000 });
-  await page.getByRole("link", { name: "Explore menu" }).hover();
-  assert.ok(await page.getByRole("link", { name: "Explore menu" }).evaluate(element => new DOMMatrix(getComputedStyle(element).transform).m42 < 0), "hero button lifts on pointer hover");
+  const heroButton = page.getByRole("link", { name: "Explore menu" });
+  await heroButton.hover();
+  assert.ok(await heroButton.evaluate(element => {
+    const style = getComputedStyle(element);
+    return new DOMMatrix(style.transform).m42 === 0 && style.transitionDuration.split(",").some(duration => parseFloat(duration) >= 0.3);
+  }), "hero button uses smooth color changes without shifting upward");
   await page.locator(".dish-card").first().hover();
-  assert.ok(await page.locator(".dish-card .dish-image img").first().evaluate(element => new DOMMatrix(getComputedStyle(element).transform).a >= 1.04), "food image gently enlarges on pointer hover");
+  await page.waitForFunction(() => {
+    const image = document.querySelector(".dish-card .dish-image img");
+    return image && new DOMMatrix(getComputedStyle(image).transform).a >= 1.04;
+  });
+  assert.ok(await page.locator(".dish-card .dish-image img").first().evaluate(element => {
+    const style = getComputedStyle(element);
+    return parseFloat(style.transitionDuration) >= 0.5 && new DOMMatrix(style.transform).a >= 1.04;
+  }), "food image zoom uses a gradual transition");
   await page.getByRole("link", { name: "Explore menu" }).focus();
   assert.notEqual(await page.getByRole("link", { name: "Explore menu" }).evaluate(element => getComputedStyle(element).outlineStyle), "none", "keyboard focus remains visible");
   await page.goto("http://127.0.0.1:3000", { waitUntil: "networkidle" });
