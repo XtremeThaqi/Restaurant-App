@@ -72,13 +72,16 @@ async function checkEngine(engine, name) {
       assert.ok(opacity < 1 && opacity > .44, "foreground fades while video stays fixed");
       assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
       await page.evaluate(() => {
-        const track = document.querySelector(".hero-scroll");
-        const top = scrollY + track.getBoundingClientRect().top;
-        scrollTo({ top: top + track.offsetHeight - innerHeight + 100, behavior: "instant" });
+        const menuPanel = document.querySelector(".menu-section");
+        const target = scrollY + menuPanel.getBoundingClientRect().top + 100;
+        scrollTo({ top: target, behavior: "instant" });
       });
       await page.waitForTimeout(180);
-      const released = await page.locator(".hero").boundingBox();
-      assert.ok(released.y < -40, "hero releases naturally when the scroll reaches 100%");
+      const coveredMenu = await menu.boundingBox();
+      const coveredHero = await page.locator(".hero").boundingBox();
+      assert.ok(coveredMenu.y <= -80, "menu moves up until it covers the hero viewport");
+      assert.ok(Math.abs(coveredHero.y - top.y) < 2, "hero remains stationary behind the menu");
+      assert.ok(await menu.evaluate(e => e.contains(document.elementFromPoint(innerWidth / 2, innerHeight / 2))), "menu is the visible topmost panel after covering the hero");
       assert.equal(await track.evaluate(e => Number(getComputedStyle(e).getPropertyValue("--hero-scroll-progress"))), 1);
       await page.evaluate(() => scrollTo({ top: 0, behavior: "instant" }));
       await page.addScriptTag({ path: require.resolve("axe-core/axe.min.js") });
