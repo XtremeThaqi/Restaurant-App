@@ -10,7 +10,6 @@ export default function Hero() {
   const runway = useRef<HTMLElement>(null);
   const section = useRef<HTMLDivElement>(null);
   const video = useRef<HTMLVideoElement>(null);
-  const resumeAfterVisibility = useRef(false);
   const [source, setSource] = useState<string>();
   const [playing, setPlaying] = useState(false);
   const [hasPlayed, setHasPlayed] = useState(false);
@@ -88,18 +87,10 @@ export default function Hero() {
   }, [motionAllowed]);
 
   useEffect(() => {
-    const pauseWhenHidden = () => {
-      if (document.hidden) {
-        resumeAfterVisibility.current = Boolean(video.current && !video.current.paused);
-        video.current?.pause();
-      } else if (resumeAfterVisibility.current && video.current && source) {
-        resumeAfterVisibility.current = false;
-        void video.current.play().catch(() => setPlaying(false));
-      }
-    };
+    const pauseWhenHidden = () => { if (document.hidden) video.current?.pause(); };
     document.addEventListener("visibilitychange", pauseWhenHidden);
     return () => document.removeEventListener("visibilitychange", pauseWhenHidden);
-  }, [source]);
+  }, []);
 
   const togglePlayback = () => {
     const element = video.current;
@@ -115,15 +106,15 @@ export default function Hero() {
   return <section ref={runway} className={`hero-scroll${motionAllowed ? " is-pinned" : ""}`}><div ref={section} className="hero" aria-labelledby="hero-heading">
     <div className="hero-media" aria-hidden="true">
       <Image className="hero-image" src="/videos/blini-chef-poster.webp" alt="" fill priority sizes="100vw" quality={80} />
-      <video ref={video} className={`hero-video${source && hasPlayed && !failed ? " is-playing" : ""}`} src={source} poster="/videos/blini-chef-poster.webp" autoPlay muted loop playsInline preload="auto" tabIndex={-1}
+      <video ref={video} className={`hero-video${source && hasPlayed && !failed ? " is-playing" : ""}`} src={source} poster="/videos/blini-chef-poster.webp" autoPlay muted loop playsInline preload="none" tabIndex={-1}
         onPlaying={() => { setPlaying(true); setHasPlayed(true); }} onPause={() => setPlaying(false)} onError={() => { setFailed(true); setPlaying(false); }} />
     </div>
     <div className="hero-shade" />
     <div className="container hero-content">
       <p className="eyebrow light"><span className="small-line" /> The BLINI table</p>
       <h1 id="hero-heading">Good food.<br />Better <em>company.</em></h1>
-      <p className="hero-description">A little discovery. A long conversation.<br />Discover a place made for the moments around the table.</p>
-      <div className="actions"><a className="button button-clay" href="#menu">Explore menu <Icon name="arrow-up-right" /></a><a className="button button-ghost" href="#reservations">Reserve a table</a></div>
+      <p className="hero-description">A little discovery. A long conversation.<br />Explore a restaurant concept made for the moments around the table.</p>
+      <div className="actions"><a className="button button-clay" href="#menu">Explore menu <Icon name="arrow-up-right" /></a><a className="button button-ghost" href="#reservations">Reserve a table <span className="demo-tag">Demo</span></a></div>
     </div>
     <div className="container hero-bottom"><span>Food, conversation & a slower pace</span><div className="hero-bottom-actions">{initialized && !failed && <button className="hero-playback" type="button" onClick={togglePlayback} aria-label={playing ? "Pause background video" : "Play background video"}>
       <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" focusable="false">{playing ? <path d="M3 2h3v12H3zm7 0h3v12h-3z" /> : <path d="m4 2 10 6-10 6z" />}</svg>

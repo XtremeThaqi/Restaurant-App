@@ -1,32 +1,49 @@
 # BLINI
 
-BLINI is a fictional restaurant website built with Next.js 16, React 19, TypeScript and Tailwind CSS. It features a responsive sample menu, a cinematic cooking-video hero and a local reservation preview. No orders or reservations are accepted.
+A fictional restaurant portfolio website built with Next.js App Router, React, TypeScript and Tailwind CSS.
 
-## Run locally
+The redesign lives on `feat/blini-complete-redesign`. It includes an editorial visual identity, category-filtered sample menu, accessible mobile navigation and a local-only reservation preview.
 
-Use Node.js 22 and npm 10:
+**This is a demo. No orders, bookings or services are offered.** Menu amounts are illustrative USD values from the original project. Business hours are examples. No restaurant operating details or reviews are asserted.
+
+## Development
+
+Use Node.js 22 and the existing npm lockfile:
 
 ```sh
 npm ci
 npm run dev
 ```
 
-Open http://localhost:3000. For a production preview, run `npm run build` followed by `npm run start`. Next.js uses its supported webpack mode for this project.
-
-## Verify
+Open http://localhost:3000.
 
 ```sh
-npm audit
-npm audit --omit=dev
 npm run lint -- --max-warnings=0
-npm run typecheck
 npm run build
+npm run typecheck
+npm run start
 ```
 
-GitHub Actions also runs reservation tests, responsive browser checks, hero media checks and automated accessibility checks. See [.github/workflows/redesign-quality.yml](.github/workflows/redesign-quality.yml) for the exact commands. The project includes Chromium and WebKit browser checks; real iPhone Safari and other physical devices still need manual review.
+## Verification
 
-## Experience and limits
+GitHub Actions runs the checks above, reservation validation tests, Chromium interaction/overflow checks at seven viewport widths and axe accessibility checks at three widths. Before/after screenshots and JSON reports are attached to the workflow run as `blini-redesign-review`.
 
-The muted hero video attempts inline autoplay where the browser permits it. A poster and accessible Play/Pause control cover blocked autoplay or failed media. Reduced-motion and data-saving preferences suppress automatic playback. On suitable viewports, the hero stays pinned during native scrolling while its text and overlay respond to scroll progress; short viewports and reduced-motion settings use a static layout. Footer copy identifies the fictional concept, and the reservation form states clearly that it creates no booking or availability promise.
+The browser QA packages are installed into an isolated CI directory, preserving application dependencies and the lockfile. The test commands are in [.github/workflows/redesign-quality.yml](.github/workflows/redesign-quality.yml).
 
-The [hero-video notes](docs/HERO-VIDEO.md) record asset provenance and browser limitations. The [dependency security report](docs/DEPENDENCY-SECURITY.md) records the audit baseline and remaining development-tool findings. Menu details, food-image rights, hours and operational contact details require verification before any commercial use. No real restaurant address or booking system is provided.
+## Content and architecture
+
+- `src/app/data/`: typed illustrative menu and concept hours
+- `src/app/components/`: focused server/client UI components and original local images
+- `src/app/lib/reservation.ts`: pure local date and form validation
+- `src/app/globals.css`: design tokens, components, responsive layouts and motion preferences
+- `scripts/`: browser and validation tests
+
+Read [the redesign audit and verification notes](docs/REDESIGN.md) for design decisions, demo behaviour and remaining limitations.
+
+See [the cinematic hero notes](docs/HERO-VIDEO.md) for footage attribution and license, asset sizes, encoding commands, playback behavior and browser verification.
+
+## Before commercial deployment
+
+The dependency security upgrade moves to Next.js 16 and React 19 and removes four unused packages. The verified full audit decreased from 26 findings to 9 development-tool findings (2 moderate, 7 high, no critical). See [the dependency security report](docs/DEPENDENCY-SECURITY.md) for exact versions, audit evidence and remaining limitations.
+
+Verify food-image rights, menu details, address, contact information, opening hours and any operational booking provider before turning this concept into a real restaurant website.

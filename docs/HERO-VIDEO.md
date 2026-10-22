@@ -28,7 +28,7 @@ ffmpeg -ss 6 -i source.mp4 -vf scale=1440:810 -frames:v 1 -quality 82 public/vid
 
 The static poster renders on the server, including with JavaScript disabled. The fixed hero sizing and absolutely positioned media reserve layout space. The existing identity, copy, navigation, CTAs and mobile SVG fixes remain intact. The dark gradient provides text contrast throughout the clip. Decorative footage is hidden from assistive technology, while the labelled Play/Pause button remains keyboard accessible with a 44px minimum target and visible focus.
 
-Muted, inline autoplay and looping are enabled. Rejected autoplay (including Safari Low Power Mode) leaves the poster and a working Play button. Pause freezes the current frame and stops parallax. Media errors retain the poster and remove the unavailable control. Hiding the document pauses playback. If it was playing before the tab was hidden, it attempts to resume when visible again; a visitor-initiated pause remains paused.
+Muted, inline autoplay and looping are enabled. Rejected autoplay (including Safari Low Power Mode) leaves the poster and a working Play button. Pause freezes the current frame and stops parallax. Media errors retain the poster and remove the unavailable control. Hiding the document pauses playback; it can be resumed explicitly on return.
 
 Reduced motion, reduced data, Save-Data, and reported 2G/slow-2G connections prevent automatic video requests. An explicit Play action opts into footage, while motion/data preferences continue to suppress parallax. Preference changes are handled live. Browsers without a data-saving signal cannot expose that preference to the page; the small mobile file still limits transfer. iOS autoplay decisions remain under browser control.
 
