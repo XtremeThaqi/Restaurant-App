@@ -7,15 +7,12 @@ import { useEffect, useRef, useState } from "react";
 type Connection = EventTarget & { saveData?: boolean; effectiveType?: string };
 
 export default function Hero() {
-  const runway = useRef<HTMLElement>(null);
-  const section = useRef<HTMLDivElement>(null);
   const video = useRef<HTMLVideoElement>(null);
   const resumeAfterVisibility = useRef(false);
   const [source, setSource] = useState<string>();
   const [playing, setPlaying] = useState(false);
   const [hasPlayed, setHasPlayed] = useState(false);
   const [failed, setFailed] = useState(false);
-  const [motionAllowed, setMotionAllowed] = useState(false);
   const [initialized, setInitialized] = useState(false);
 
   useEffect(() => {
@@ -27,7 +24,6 @@ export default function Hero() {
     const applyPreferences = () => {
       setInitialized(true);
       const saveData = data.matches || connection?.saveData || /(^|-)2g$/.test(connection?.effectiveType ?? "");
-      setMotionAllowed(!motion.matches && !saveData);
       setSource(!motion.matches && !saveData ? `/videos/blini-chef-${rendition}.mp4` : undefined);
     };
     applyPreferences();
@@ -56,37 +52,6 @@ export default function Hero() {
   }, [source]);
 
   useEffect(() => {
-    const track = runway.current;
-    const stage = section.current;
-    const menu = track?.nextElementSibling;
-    if (!track || !stage || !menu || !motionAllowed) return;
-    let frame = 0;
-    const update = () => {
-      frame = 0;
-      // The hero is sticky for one viewport and the next panel moves over it
-      // in normal document flow. Track the incoming panel, not the sticky hero.
-      const distance = Math.max(1, stage.offsetHeight);
-      const progress = Math.min(1, Math.max(0, 1 - menu.getBoundingClientRect().top / distance));
-      track.style.setProperty("--hero-scroll-progress", progress.toFixed(4));
-      track.style.setProperty("--hero-content-y", `${Math.round(-90 * progress)}px`);
-      track.style.setProperty("--hero-content-opacity", (1 - .55 * progress).toFixed(3));
-      track.style.setProperty("--hero-bottom-opacity", (1 - .55 * progress).toFixed(3));
-    };
-    const schedule = () => { if (!frame) frame = requestAnimationFrame(update); };
-    update();
-    window.addEventListener("scroll", schedule, { passive: true });
-    window.addEventListener("resize", schedule);
-    return () => {
-      cancelAnimationFrame(frame);
-      window.removeEventListener("scroll", schedule);
-      window.removeEventListener("resize", schedule);
-      for (const name of ["--hero-scroll-progress", "--hero-content-y", "--hero-content-opacity", "--hero-bottom-opacity"]) {
-        track.style.removeProperty(name);
-      }
-    };
-  }, [motionAllowed]);
-
-  useEffect(() => {
     const pauseWhenHidden = () => {
       if (document.hidden) {
         resumeAfterVisibility.current = Boolean(video.current && !video.current.paused);
@@ -111,7 +76,7 @@ export default function Hero() {
     }
   };
 
-  return <section ref={runway} className={`hero-scroll${motionAllowed ? " is-pinned" : ""}`}><div ref={section} className="hero" aria-labelledby="hero-heading">
+  return <section className="hero-scroll"><div className="hero" aria-labelledby="hero-heading">
     <div className="hero-media" aria-hidden="true">
       <Image className="hero-image" src="/videos/blini-chef-poster.webp" alt="" fill priority sizes="100vw" quality={80} />
       <video ref={video} className={`hero-video${source && hasPlayed && !failed ? " is-playing" : ""}`} src={source} poster="/videos/blini-chef-poster.webp" autoPlay muted loop playsInline preload="auto" tabIndex={-1}
@@ -128,6 +93,5 @@ export default function Hero() {
       <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" focusable="false">{playing ? <path d="M3 2h3v12H3zm7 0h3v12h-3z" /> : <path d="m4 2 10 6-10 6z" />}</svg>
       <span>{playing ? "Pause" : "Play"}</span>
     </button>}<a href="#menu">Discover BLINI <Icon name="arrow-down" /></a></div></div>
-    <div className="hero-scroll-meter" aria-hidden="true"><span /></div>
   </div></section>;
 }

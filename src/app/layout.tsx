@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import "lenis/dist/lenis.css";
 import "./globals.css";
 const title = "BLINI — Good food. Better company.";
 const description = "Explore BLINI, a fictional restaurant portfolio concept: an international sample menu, warm editorial design and an interactive reservation demo. No real bookings or orders.";

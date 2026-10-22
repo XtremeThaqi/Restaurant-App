@@ -10,7 +10,7 @@
   --font-body: Arial, Helvetica, sans-serif; --ease: cubic-bezier(.2,.7,.3,1);
 }
 *, *::before, *::after { box-sizing: border-box; }
-html { scroll-behavior: smooth; scroll-padding-top: 100px; background: var(--ivory); }
+html { scroll-behavior: auto; scroll-padding-top: 100px; background: var(--ivory); }
 body { margin: 0; color: var(--ink); font-family: var(--font-body); font-size: 16px; line-height: 1.65; -webkit-font-smoothing: antialiased; }
 ::selection { background: #d8b59a; color: var(--ink); }
 a { color: inherit; text-decoration: none; }
@@ -72,40 +72,10 @@ section[tabindex="-1"]:focus, main:focus { outline: none; }
 .menu-toggle { display: none; background: transparent; border: 1px solid #ffffff66; border-radius: var(--radius); width: 46px; height: 46px; }
 .menu-toggle .icon { width: 25px; height: 25px; }
 .hero { position: relative; isolation: isolate; color: var(--ivory); background: var(--ink); min-height: 760px; min-height: max(760px, 95svh); display: flex; flex-direction: column; justify-content: center; }
-/* True sticky stacking: the hero occupies the first viewport and stays fixed
-   while later sections flow naturally over it. No negative margins or scroll hijacking. */
-.hero-scroll { position: relative; }
-.hero-scroll.is-pinned {
-  position: sticky;
-  top: 0;
-  z-index: 0;
-  height: 100svh;
-}
-/* The Menu is the next panel in normal document flow. As the page scrolls
-   it rises from below the viewport, naturally covering the stationary hero. */
-.hero-scroll.is-pinned + .menu-section {
-  position: relative;
-  z-index: 2;
-  border-radius: 24px 24px 0 0;
-  box-shadow: 0 -18px 46px rgb(23 27 23 / 13%);
-}
-.hero-scroll.is-pinned + .menu-section::before {
-  content: "";
-  position: absolute;
-  inset: 0 0 auto;
-  height: 1px;
-  background: rgb(255 255 255 / 60%);
-  pointer-events: none;
-}
-.hero-scroll.is-pinned > .hero { position: relative; height: 100%; min-height: 0; overflow: hidden; }
-.hero-scroll.is-pinned .hero-content { transform: translate3d(0,var(--hero-content-y,0px),0); }
-/* Fade editorial copy only: keep actionable controls at full opacity and contrast. */
-.hero-scroll.is-pinned .hero-content > :not(.actions) { opacity: var(--hero-content-opacity,1); }
-.hero-scroll.is-pinned .hero-bottom { opacity: var(--hero-bottom-opacity,1); }
-.hero-scroll.is-pinned .hero-shade::after { content: ""; position: absolute; inset: 0; background: var(--ink); opacity: calc(var(--hero-scroll-progress,0) * .23); pointer-events: none; }
-.hero-scroll-meter { display: none; position: absolute; z-index: 2; inset: auto 0 0; height: 3px; background: #ffffff40; pointer-events: none; }
-.hero-scroll.is-pinned .hero-scroll-meter { display: block; }
-.hero-scroll-meter span { display: block; height: 100%; width: 100%; transform-origin: left center; transform: scaleX(var(--hero-scroll-progress,0)); background: #e19366; }
+.stacked-intro { position: relative; isolation: isolate; }
+.hero-scroll { position: sticky; top: 0; z-index: 0; height: 100svh; }
+.hero-scroll > .hero { width: 100%; height: 100%; min-height: 0; }
+.menu-section { position: relative; z-index: 1; border-radius: 24px 24px 0 0; box-shadow: 0 -12px 32px rgb(23 27 23 / 12%); }
 .hero-media { position: absolute; inset: 0; overflow: hidden; z-index: -3; }
 .hero-image,.hero-video { object-fit: cover; object-position: center; }
 .hero-video { position: absolute; width: 100%; height: 100%; inset: 0; opacity: 0; transform: scale(1.025); transition: opacity .6s ease; }
@@ -239,7 +209,7 @@ section[tabindex="-1"]:focus, main:focus { outline: none; }
   .navigation { gap: 22px; }
 }
 @media (max-width: 767px) {
-  .hero-scroll.is-pinned + .menu-section { border-radius: 18px 18px 0 0; }
+  .menu-section { border-radius: 18px 18px 0 0; }
   .menu-section { padding-top: 28px; }
   html { scroll-padding-top: 84px; }
   #top { scroll-margin-top: -84px; }
@@ -312,15 +282,18 @@ section[tabindex="-1"]:focus, main:focus { outline: none; }
   .footer-bottom { flex-direction: column; align-items: start; }
   .footer-bottom a { margin-left: 0; }
 }
-/* Short viewports need natural document height so hero CTAs never become clipped. */
+/* Fit the existing copy and controls in short windows without disabling stacking. */
 @media (max-height: 720px) {
-  .hero-scroll.is-pinned { position: relative; top: auto; height: auto; }
-  .hero-scroll.is-pinned > .hero { position: relative; height: auto; min-height: max(760px,100svh); overflow: visible; }
-  .hero-scroll.is-pinned .hero-scroll-meter { display: none; }
-  .hero-scroll.is-pinned + .menu-section {
-    border-radius: 0;
-    box-shadow: none;
-  }
+  .hero-content { padding-block: 105px 110px; }
+  .hero .eyebrow { margin-bottom: 12px; }
+  .hero h1 { font-size: clamp(2.6rem, 8svh, 5.5rem); }
+  .hero-description { margin-block: 16px; }
+  .hero .button { min-height: 44px; padding-block: 9px; }
+  .hero-bottom { bottom: 12px; padding-top: 8px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-scroll { position: relative; height: auto; }
+  .hero-scroll > .hero { height: auto; min-height: 100svh; }
 }
 @media (prefers-reduced-motion: no-preference) {
   .hero-content > * { animation: enter .65s var(--ease) backwards; }

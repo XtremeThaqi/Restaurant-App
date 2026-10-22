@@ -33,7 +33,7 @@ async function settleImages(page) {
     }
   } catch (error) { console.warn("Baseline screenshot unavailable:", error.message); }
   await baseline.close();
-  await page.goto("http://127.0.0.1:3000", { waitUntil: "networkidle" });
+  await page.goto((process.env.BLINI_QA_URL || "http://127.0.0.1:3000"), { waitUntil: "networkidle" });
   assert.equal(await page.locator("h1").count(), 1);
   assert.equal(await page.locator(".dish-card").count(), 12);
   // Unicode arrows and starbursts may turn into iOS emoji; use vector icons throughout.
@@ -56,7 +56,7 @@ async function settleImages(page) {
   for (const width of [390, 1024, 1440]) {
     await page.setViewportSize({ width, height: 1000 });
     for (const id of ["menu", "story", "visit", "reservations"]) {
-      await page.goto(`http://127.0.0.1:3000/#${id}`, { waitUntil: "networkidle" });
+      await page.goto(`${process.env.BLINI_QA_URL || "http://127.0.0.1:3000"}/#${id}`, { waitUntil: "networkidle" });
       const gap = await page.evaluate(target => {
         const header = document.querySelector(".site-header").getBoundingClientRect();
         const eyebrow = document.querySelector(`#${target} .eyebrow`).getBoundingClientRect();
@@ -67,7 +67,7 @@ async function settleImages(page) {
     await page.goBack({ waitUntil: "networkidle" });
     assert.equal(new URL(page.url()).hash, "#visit", "browser history restores the previous section");
   }
-  await page.goto("http://127.0.0.1:3000", { waitUntil: "networkidle" });
+  await page.goto((process.env.BLINI_QA_URL || "http://127.0.0.1:3000"), { waitUntil: "networkidle" });
   await page.setViewportSize({ width: 1440, height: 1000 });
   // Earlier navigation tests intentionally use reduced motion. Hover timing
   // must be tested with motion enabled, not with transitions disabled by CSS.
@@ -90,7 +90,7 @@ async function settleImages(page) {
   await page.getByRole("link", { name: "Explore menu" }).focus();
   assert.notEqual(await page.getByRole("link", { name: "Explore menu" }).evaluate(element => getComputedStyle(element).outlineStyle), "none", "keyboard focus remains visible");
   await page.emulateMedia({ reducedMotion: "reduce" });
-  await page.goto("http://127.0.0.1:3000", { waitUntil: "networkidle" });
+  await page.goto((process.env.BLINI_QA_URL || "http://127.0.0.1:3000"), { waitUntil: "networkidle" });
   for (const width of [320, 375, 390, 768, 1024, 1440, 1920]) {
     await page.setViewportSize({ width, height: 1000 });
     await page.evaluate(() => window.scrollTo(0, 0));
@@ -122,6 +122,7 @@ async function settleImages(page) {
   await page.getByRole("link", { name: "Back to top" }).click();
   await page.waitForFunction(() => scrollY < 8);
   assert.equal(new URL(page.url()).hash, "#top");
+  assert.equal(await page.evaluate(() => document.activeElement.id), "top", "Back to Top restores keyboard focus to the beginning");
   await page.getByRole("button", { name: "Desserts", exact: true }).click();
   assert.equal(await page.locator(".dish-card").count(), 1);
   assert.equal(await page.locator(".dish-card h3").textContent(), "Apfelstrudel");
